@@ -1,0 +1,78 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Pulsy Docs",
+  "colors": {
+    "primary": "#1A1A1A",
+    "light": "#6A6A6A",
+    "dark": "#0F0F0F"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Atria",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "atria/overview"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "XFlow",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "xflow/overview"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "xflow/api-reference/endpoints/get_swaps",
+              "xflow/api-reference/endpoints/get_bridges",
+              "xflow/api-reference/endpoints/get_chains",
+              "xflow/api-reference/endpoints/get_tokens"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {}
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@pulsy.app"
+      }
+    ]
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/pulsy_labs",
+      "github": "https://github.com/Pulsy-Global",
+      "linkedin": "https://linkedin.com/company/pulsylabs"
+    }
+  }
+}

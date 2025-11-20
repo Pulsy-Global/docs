@@ -1,0 +1,1038 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ExternalAPI",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://api.pulsy.app",
+      "description": "XFlow Production API"
+    }
+  ],
+  "paths": {
+    "/v1/external/swaps": {
+      "get": {
+        "tags": [
+          "External"
+        ],
+        "summary": "Retrieves cross-chain swaps detected within the requested timeframe.",
+        "description": "The timeframe between `from` and `to` must not exceed 30 minutes.",
+        "operationId": "ExportSwaps",
+        "parameters": [
+          {
+            "name": "From",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "To",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "Filter",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Withdrawn",
+                "Deposited",
+                "Completed"
+              ],
+              "type": "string",
+              "default": "Withdrawn"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionSwapExported"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionSwapExported"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionSwapExported"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/external/chains": {
+      "get": {
+        "tags": [
+          "External"
+        ],
+        "summary": "Retrieves all blockchains tracked by XFlow.",
+        "operationId": "ExportSupportedChains",
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportedChainExported"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportedChainExported"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportedChainExported"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/external/chains/{blockchainId}/tokens": {
+      "get": {
+        "tags": [
+          "External"
+        ],
+        "summary": "Retrieves the tokens XFlow tracks for the specified blockchain.",
+        "operationId": "ExportSupportedTokens",
+        "parameters": [
+          {
+            "name": "blockchainId",
+            "in": "path",
+            "description": "Identifier of the blockchain.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Take",
+            "in": "query",
+            "schema": {
+              "maximum": 1000,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Offset",
+            "in": "query",
+            "schema": {
+              "maximum": 100000,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportedTokensExported"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportedTokensExported"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportedTokensExported"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/external/bridges": {
+      "get": {
+        "tags": [
+          "External"
+        ],
+        "summary": "Returns all bridges whose on-chain contracts XFlow tracks across supported chains, sorted by volume.",
+        "operationId": "GetBridges",
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BridgeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BridgeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BridgeDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BridgeDto": {
+        "type": "object",
+        "properties": {
+          "earliestSwapTimestamp": {
+            "type": "string",
+            "description": "Timestamp of the earliest swap tracked for the bridge.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "latestSwapTimestamp": {
+            "type": "string",
+            "description": "Timestamp of the latest swap tracked for the bridge.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "allTimeSwapsCount": {
+            "type": "integer",
+            "description": "Total number of swaps tracked for the bridge.",
+            "format": "int32",
+            "nullable": true
+          },
+          "supportedChains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Chains whose bridge contracts are tracked by XFlow.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Official website or documentation URL of the bridge.",
+            "nullable": true
+          },
+          "icon": {
+            "type": "string",
+            "description": "Bridge icon URL.",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "description": "Unique bridge key.",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable bridge name.",
+            "nullable": true
+          },
+          "allTimeSwapsVolume": {
+            "type": "number",
+            "description": "All-time swap volume tracked for the bridge (in USD).",
+            "format": "double"
+          },
+          "status": {
+            "enum": [
+              "Operational",
+              "Warning",
+              "Malfunction"
+            ],
+            "type": "string",
+            "description": "Current bridge status in XFlow."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Bridge metadata exposed through the external API."
+      },
+      "DefaultProblemDetails": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "DefaultValidationProblemDetails": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "SupportedChainExported": {
+        "type": "object",
+        "properties": {
+          "blockchainId": {
+            "type": "string",
+            "description": "Unique identifier of the blockchain.",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable blockchain name.",
+            "nullable": true
+          },
+          "explorerUrl": {
+            "type": "string",
+            "description": "URL of the chain explorer.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Chain metadata exposed through the external API."
+      },
+      "SupportedTokenExported": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "description": "Token ticker symbol.",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Token name.",
+            "nullable": true
+          },
+          "contract": {
+            "type": "string",
+            "description": "Contract address of the token.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Token URL on the chain explorer.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Token metadata provided by the external API for a specific blockchain."
+      },
+      "SupportedTokensExported": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SupportedTokenExported"
+            },
+            "nullable": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Paged list of tokens tracked by XFlow for a specific blockchain."
+      },
+      "TagDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransactionSwapExported": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Swap unique identifier.",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Date and time when a swap was detected by XFlow.",
+            "format": "date-time",
+            "deprecated": true
+          },
+          "depositedAt": {
+            "type": "string",
+            "description": "Date and time when a swap's deposit transaction was made on the inbound chain.",
+            "format": "date-time"
+          },
+          "withdrawnAt": {
+            "type": "string",
+            "description": "Date and time when a swap's withdrawal transaction was made on the outbound chain.",
+            "format": "date-time"
+          },
+          "detectedAt": {
+            "type": "string",
+            "description": "Date and time when a swap was detected by XFlow.",
+            "format": "date-time"
+          },
+          "completedAt": {
+            "type": "string",
+            "description": "Date and time when a swap was completed by XFlow and became available in the external API.",
+            "format": "date-time"
+          },
+          "bridge": {
+            "type": "string",
+            "description": "Name of the bridge that processed the swap.",
+            "nullable": true
+          },
+          "bridgeKey": {
+            "type": "string",
+            "description": "Key of the bridge that processed the swap.",
+            "nullable": true
+          },
+          "sourceChain": {
+            "type": "string",
+            "description": "Chain on which the inbound transaction was submitted.",
+            "nullable": true
+          },
+          "destinationChain": {
+            "type": "string",
+            "description": "Chain on which the outbound transaction was submitted.",
+            "nullable": true
+          },
+          "sourceAccount": {
+            "type": "string",
+            "description": "Account that submitted the inbound transaction.",
+            "nullable": true
+          },
+          "destinationAccount": {
+            "type": "string",
+            "description": "Account that received the outbound transaction.",
+            "nullable": true
+          },
+          "sourceInteractedWith": {
+            "type": "string",
+            "description": "InteractedWith address in the inbound transaction (only for EVM chains).",
+            "nullable": true
+          },
+          "protocolKey": {
+            "type": "string",
+            "description": "Key of the protocol that processed the swap.",
+            "nullable": true
+          },
+          "sourceProtocolAddress": {
+            "type": "string",
+            "description": "Address of the protocol that emitted the swap in the inbound transaction.",
+            "nullable": true
+          },
+          "destinationProtocolAddress": {
+            "type": "string",
+            "description": "Address of the protocol that finished the swap in the outbound transaction.",
+            "nullable": true
+          },
+          "intermediateSwapId": {
+            "type": "string",
+            "nullable": true,
+            "deprecated": true
+          },
+          "sourceOtherProtocolAddresses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Other protocol addresses that emitted events tracked by XFlow to identify the swap in the inbound transaction.",
+            "nullable": true
+          },
+          "destinationOtherProtocolAddresses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Other protocol addresses that emitted events tracked by XFlow to identify the swap in the outbound transaction.",
+            "nullable": true
+          },
+          "sourceTransaction": {
+            "type": "string",
+            "description": "Inbound transaction hash.",
+            "nullable": true
+          },
+          "destinationTransaction": {
+            "type": "string",
+            "description": "Outbound transaction hash.",
+            "nullable": true
+          },
+          "sourceToken": {
+            "type": "string",
+            "description": "Inbound token on the source chain.",
+            "nullable": true
+          },
+          "destinationToken": {
+            "type": "string",
+            "description": "Outbound token on the destination chain.",
+            "nullable": true
+          },
+          "sourceTokenContract": {
+            "type": "string",
+            "description": "Inbound token contract address.",
+            "nullable": true
+          },
+          "destinationTokenContract": {
+            "type": "string",
+            "description": "Outbound token contract address.",
+            "nullable": true
+          },
+          "depositAmount": {
+            "type": "number",
+            "description": "Deposited amount in source tokens.",
+            "format": "double",
+            "nullable": true
+          },
+          "withdrawnAmount": {
+            "type": "number",
+            "description": "Withdrawn amount in destination tokens.",
+            "format": "double",
+            "nullable": true
+          },
+          "depositUsdAmount": {
+            "type": "number",
+            "description": "Deposited amount in USD equivalent.",
+            "format": "double",
+            "nullable": true
+          },
+          "withdrawnUsdAmount": {
+            "type": "number",
+            "description": "Withdrawn amount in USD equivalent.",
+            "format": "double",
+            "nullable": true
+          },
+          "usdMismatchStatus": {
+            "enum": [
+              "Unprocessed",
+              "NotFound",
+              "MismatchDetected",
+              "OK"
+            ],
+            "type": "string",
+            "description": "Indicates whether deposited and withdrawn USD amounts are within an acceptable range:\r\n`Unprocessed` (amounts not processed yet);\r\n`NotFound` (USD rates were unavailable);\r\n`MismatchDetected` (difference between deposited and withdrawn USD is unusually high);\r\n`OK` (difference is within the acceptable range)."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagDto"
+            },
+            "description": "Optional field returning extra information for certain swaps. Currently defined tags:\r\n`thor-affiliate` for swaps through Thorswap;\r\n`nft` to indicate whether the transaction is an NFT deposit or withdrawal (`nft`: `deposit` or `nft`: `withdrawal`);\r\n`injective-nonce` for swaps through the Injective bridge to the Injective chain.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnexpectedProblemDetails": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        "name": "Authorization",
+        "in": "header"
+      },
+      "Basic": {
+        "type": "http",
+        "description": "Basic auth required for external APIs. Example: \"Authorization: Basic {base64EncodedPasswordString}\"",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "Basic": [ ]
+    },
+    {
+      "Bearer": [ ]
+    }
+  ]
+}
