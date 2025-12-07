@@ -33,7 +33,6 @@ Reach out to [sales@pulsy.app](mailto:sales@pulsy.app) to start the conversation
 
 ## Stay in Touch
 
-- X: [@pulsy_labs](https://x.com/pulsy_labs)
 - General enquiries: [hello@pulsy.app](mailto:hello@pulsy.app)
 - Product support: [support@pulsy.app](mailto:support@pulsy.app)
 - Commercial & integrations: [sales@pulsy.app](mailto:sales@pulsy.app)
