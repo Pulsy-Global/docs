@@ -1,0 +1,124 @@
+---
+title: "Atria Introduction"
+---
+
+Atria is the event-feed engine for teams that need precise on-chain feeds without spending weeks on internal plumbing. A feed is a small, portable module that listens to blockchain data, applies optional filtering and transformation logic, and ships results to your destinations (webhooks today, more output types in the pipeline).
+
+Use Atria to monitor high-impact transactions, DEX liquidity shifts, bridge flows, stablecoin movements, governance votes, and dozens of other on-chain signals.
+
+The platform removes the need to engineer chain monitoring for specific events from scratch. You define a feed, and Atria handles ingestion, real-time processing, and delivery.
+
+> **Beta timeline**: Atria enters public beta in **Q1 2026**. [Apply for Early Access](https://pulsy.app/contact-atria) to reserve your place in the rollout.
+
+## What Atria Delivers
+
+- **Template Library** – Start from curated feeds that cover the most common DeFi workflows, and extend them to match your stack.
+- **Parameter Control** – Tune contracts, chains, token lists, thresholds so feeds only trigger when they matter.
+- **Multi-Channel Delivery** – Ship feeds to any destination via webhooks so they drop into your existing pipelines.
+- **Hosted or Self-Managed** – Deploy on Pulsy’s managed cloud or drop the runtime into your own infrastructure.
+
+Learn more at [pulsy.app/atria](https://pulsy.app/atria) or reach out via [sales@pulsy.app](mailto:sales@pulsy.app) to scope bespoke feed deployments.
+
+## What You Can Build
+
+- Real-time event monitors and protocol activity tracking.
+- Feed processors that normalize and reshape on-chain data into structured payloads.
+- Multi-step workflows by combining filters with optional functions for post-processing.
+- Data delivery pipelines that fan out results to consumer systems via webhooks.
+- Multi-chain combinations.
+
+## Core Pieces
+
+Atria is composed of several services that work together:
+
+- **API**: REST API for managing feeds, outputs, and configuration.
+- **Dashboard (SPA)**: Web UI for creating and monitoring feeds.
+- **Ingestor**: Connects to blockchains, ingests blocks/logs, and publishes feed data.
+- **Runtime**: Executes filters and optional functions on incoming data.
+- **Delivery**: Pushes processed data to outputs.
+- **Orchestrator**: Manages deployments and health checks for running feeds.
+
+## High-Level Flow
+
+1. **Ingestor** receives blockchain data and publishes feed data to NATS.
+2. **Runtime** picks up the feed data, runs your filter and optional function.
+3. **Delivery** pushes outputs (webhooks today).
+4. **API + Orchestrator** manage lifecycle, health checks, and deployments.
+
+## Data Types
+
+A feed subscribes to a specific data type. These correspond to the kinds of blockchain payloads that Atria ingests and publishes for later-stage processing:
+
+`BlockWithTransactions`
+```json
+{
+  "metadata": {
+    "networkId": "...",
+    "blockNumber": "...",
+    "isReorg": false
+  },
+  "block": {
+    "number": "...",
+    "hash": "...",
+    "timestamp": "...",
+    "transactions": [
+      {
+        "hash": "...",
+        "from": "...",
+        "to": "...",
+        "value": "..."
+      }
+    ]
+  }
+}
+```
+`BlockWithLogs`
+```json
+{
+  "metadata": {
+    "networkId": "...",
+    "blockNumber": "...",
+    "isReorg": false
+  },
+  "logs": [
+    {
+      "address": "...",
+      "data": "...",
+      "topics": ["..."]
+    }
+  ]
+}
+```
+`BlockWithTraces` (debug traces)
+```json
+{
+  "metadata": {
+    "networkId": "...",
+    "blockNumber": "...",
+    "isReorg": false
+  },
+  "traces": [
+    {
+      "txHash": "...",
+      "result": {
+        "from": "...",
+        "to": "...",
+        "value": "..."
+      }
+    }
+  ]
+}
+```
+
+## Supported Networks
+
+**Atria Cloud** (mainnets only, for now):
+- Ethereum (Mainnet).
+- Arbitrum One (Mainnet).
+- Optimism (Mainnet).
+- Base (Mainnet).
+- Polygon (Mainnet).
+- BNB Chain (Mainnet).
+- Avalanche C-Chain (Mainnet).
+
+**Local deployments**: support any EVM-compatible chain or multiple chains by adding RPC endpoints to the network config.
