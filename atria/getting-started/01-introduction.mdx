@@ -45,6 +45,36 @@ Atria is composed of several services that work together:
 3. **Delivery** pushes outputs (webhooks today).
 4. **API + Orchestrator** manage lifecycle, health checks, and deployments.
 
+```mermaid
+graph TD
+  subgraph Data Flow
+    CHAIN[Blockchain]
+    ING["Ingestor - captures blocks/logs/traces"]
+    JS["NATS JetStream - feed data stream"]
+    RT["Runtime - runs feed filters/functions"]
+    OUTS["Feed Output Stream - per-feed results"]
+    DEL["Delivery Service - sends webhooks"]
+    DEST[Webhook destinations]
+  end
+
+  subgraph Control & Management
+    API["API - manage feeds and outputs"]
+    DASH["Dashboard - create and monitor feeds"]
+    PG["PostgreSQL - feeds/outputs/deploys/tags"]
+    ORCH["Orchestrator - provisions and watches runtimes"]
+    STORE["Code Storage - local or S3 manifests"]
+  end
+
+  CHAIN -->|Blocks/logs/traces| ING -->|Publishes feed data| JS -->|Per-feed stream| RT -->|Publishes results| OUTS -->|Consumes| DEL -->|Sends| DEST
+
+  DASH -->|Uses| API -->|CRUD + deploy| PG
+  API -->|Provision/deploy requests| ORCH
+  ORCH -->|Deploys/manages runtimes| RT
+  ORCH -->|State and deploys| PG
+  ORCH -->|Reads/writes manifests| STORE
+  RT -->|Health and test signals| ORCH
+```
+
 ## Data Types
 
 A feed subscribes to a specific data type. These correspond to the kinds of blockchain payloads that Atria ingests and publishes for later-stage processing:
