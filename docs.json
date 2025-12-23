@@ -16,7 +16,7 @@
           {
             "group": "Getting Started",
             "pages": [
-              "atria/getting-started/01-introduction"
+              "atria/getting-started/overview"
             ]
           }
         ]
@@ -27,7 +27,7 @@
           {
             "group": "Getting Started",
             "pages": [
-              "xflow/overview"
+              "xflow/getting-started/overview"
             ]
           },
           {
