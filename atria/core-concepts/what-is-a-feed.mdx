@@ -1,0 +1,45 @@
+---
+title: "What Is a Feed"
+---
+
+A feed is Atria’s deployable unit: it listens to blockchain data, decides what matters, and emits a normalized payload to your destinations.
+
+## Anatomy of a Feed
+
+- **Source & Payload**: What network to listen on and what shape to expect from the ingestor (blocks with transactions, blocks with logs, or debug traces).
+- **Filter (required)**: A predicate that determines whether an incoming item should trigger. Kept close to ingestion for low latency.
+- **Function (optional)**: Post-filter logic to reshape, enrich, or compute fields before delivery.
+- **Outputs**: Destinations that receive the processed payload. Webhooks are available today; more destinations are planned.
+- **Metadata**: Name, description, tags, and version to keep track of iterations.
+
+## Inputs and Outputs
+
+- **Inputs** come from the ingestor as typed payloads; filters and functions receive the same shape.
+- **Outputs** are normalized per feed so downstream systems get consistent fields (e.g., block metadata plus any enriched fields you add).
+- Delivery is decoupled from ingestion, letting you pivot destinations without redeploying logic.
+
+## How Filter and Function Execute
+
+**Filter**
+
+Filters execute inside the feed runtime process using an embedded V8 engine. They can be written in JavaScript only for now. Your code is compiled once together with an internal wrapper plus the bundled `ethers` library.
+
+The wrapper locks down the sandbox (removes `eval`, freezes prototypes, no console output) and bridges data by JSON: the runtime serializes the incoming payload, calls your exported `main`, and deserializes the return value. Returning `undefined` or empty JSON means “no output” and the message is dropped.
+
+Each execution is wrapped in the runtime execution timeout (default 5 seconds); overruns surface as a timeout error. Filters run on every ingested message before anything else, keeping latency low and guaranteeing that only matching payloads flow forward.
+
+**Function**
+
+The function is optional and runs after the filter. When you add a function, the runtime deploys your code to Fission (Kubernetes-based serverless) using a small wrapper per language/runtime. Deployment happens at feed publish/test time: code is packaged with the wrapper, pushed as a Fission package/function, and exposed via an HTTP trigger. The runtime waits for Kubernetes plus HTTP readiness before marking the function usable.
+
+At runtime the filtered payload is sent over HTTP to the function. The wrapper verifies request shape, responds to health pings, ensures `main` exists, invokes it with the JSON body, and returns JSON output. HTTP errors or thrown exceptions are surfaced with metadata so the system can determine whether a failure happened in the function or earlier in the filter.
+
+If no function is present, the filter output is delivered directly to outputs; if a function is present, its return value becomes the final payload.
+
+## Common Use Cases
+
+- Event alerts on protocol activity (liquidity shifts, governance votes, bridge flows).
+- Targeted monitoring on specific contracts or token lists with threshold-based triggers.
+- Monitoring interactions with specified contracts or deposits/withdrawals on specific accounts.
+- Transformations before sending to automation pipelines.
+- And more - any on-chain condition you can express in code can ship as a feed.
