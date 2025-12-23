@@ -22,7 +22,8 @@
           {
             "group": "Core Concepts",
               "pages": [
-              "atria/core-concepts/what-is-a-feed"
+              "atria/core-concepts/what-is-a-feed",
+              "atria/core-concepts/feed-manifest"
               ]
           }
         ]

@@ -1,0 +1,125 @@
+---
+title: "Feed Manifest"
+---
+
+A feed manifest is the blueprint Atria uses to understand a feed. It names the feed, points to the chain data you care about, and tells the runtime which files to execute.
+
+Here is an example manifest from the public Atria library: [EVM ERC-20 Transfers](https://github.com/Pulsy-Global/atria-library/tree/main/library/evm-erc-20-transfers).
+
+The manifest definition includes `manifest.json`, a filter template `filter.js.hbs`, and a `filter-config.json` that defines filter parameters.
+
+```json
+{
+  "name": "EVM ERC-20 Transfers",
+  "version": "1.0.1",
+  "description": "Filter token transactions - configure minimum/maximum values & track specific ERC-20 transfers",
+  "author": "Pulsy Atria Team",
+  "config": {
+    "source": {
+      "networkId": "ethereum-mainnet",
+      "networkFamily": "EVM",
+      "dataType": "BlockWithLogs",
+      "startBlock": null,
+      "endBlock": null
+    },
+    "runtime": {
+      "errorHandling": "ContinueOnError",
+      "filter": {
+        "path": "filter.js.hbs",
+        "config": "filter-config.json",
+        "engine": "javascript"
+      }
+    },
+    "destination": {
+      "errorHandling": "ContinueOnError"
+    }
+  }
+}
+```
+
+The companion files keep code and configuration together:
+`filter.js.hbs`: a Handlebars template for the JavaScript filter. Placeholders such as token address, sender/receiver, min/max amount, and decimals are filled before deployment.
+
+```javascript
+function main(stream) {
+    const TOKEN_ADDRESS = {{#if TOKEN_ADDRESS}}"{{TOKEN_ADDRESS}}"{{else}}null{{/if}};
+    const MIN_VALUE = {{#if MIN_VALUE}}{{MIN_VALUE}}{{else}}null{{/if}};
+    const MAX_VALUE = {{#if MAX_VALUE}}{{MAX_VALUE}}{{else}}null{{/if}};
+    const FROM_ADDRESS = {{#if FROM_ADDRESS}}"{{FROM_ADDRESS}}"{{else}}null{{/if}};
+    const TO_ADDRESS = {{#if TO_ADDRESS}}"{{TO_ADDRESS}}"{{else}}null{{/if}};
+    const DECIMALS = {{#if DECIMALS}}{{DECIMALS}}{{else}}null{{/if}};
+
+    const iface = new ethers.Interface([{ name: 'Transfer', type: 'event', inputs: [
+        { indexed: true, name: 'from', type: 'address' },
+        { indexed: true, name: 'to', type: 'address' },
+        { indexed: false, name: 'value', type: 'uint256' }
+    ] }]);
+
+    const topic = iface.getEvent('Transfer').topicHash;
+
+    const erc20Transfers = (stream.logs || [])
+        .filter(l => l.topics?.[0]?.toLowerCase() === topic)
+        .map(log => {
+            try {
+                const { args } = iface.parseLog(log);
+                return { hash: log.transactionHash, from: args.from, to: args.to, value: args.value.toString(), address: log.address };
+            } catch { return null; }
+        })
+        .filter(t => {
+            if (!t) return false;
+            const value = BigInt(t.value);
+            if (DECIMALS != null) {
+                if (MIN_VALUE != null && value < ethers.parseUnits(MIN_VALUE.toString(), DECIMALS)) return false;
+                if (MAX_VALUE != null && value > ethers.parseUnits(MAX_VALUE.toString(), DECIMALS)) return false;
+            } else {
+                if (MIN_VALUE != null && value < BigInt(MIN_VALUE)) return false;
+                if (MAX_VALUE != null && value > BigInt(MAX_VALUE)) return false;
+            }
+            if (TOKEN_ADDRESS && t.address.toLowerCase() !== TOKEN_ADDRESS.toLowerCase()) return false;
+            if (FROM_ADDRESS && t.from.toLowerCase() !== FROM_ADDRESS.toLowerCase()) return false;
+            if (TO_ADDRESS && t.to.toLowerCase() !== TO_ADDRESS.toLowerCase()) return false;
+            return true;
+        });
+
+    if (erc20Transfers.length === 0) return null;
+
+    return { metadata: stream.metadata, count: erc20Transfers.length, transfers: erc20Transfers };
+}
+```
+
+`filter-config.json`: the schema for those placeholders. It describes each setting, notes whether it is optional, and provides default values.
+
+```json
+{
+  "FROM_ADDRESS": {
+    "description": "If not specified, this filter is ignored",
+    "optional": true,
+    "value": null
+  },
+  "TO_ADDRESS": {
+    "description": "If not specified, this filter is ignored",
+    "optional": true,
+    "value": null
+  },
+  "TOKEN_ADDRESS": {
+    "description": "If not specified, this filter is ignored",
+    "optional": true,
+    "value": null
+  },
+  "MIN_VALUE": {
+    "description": "Minimum transfer amount (ignored if not specified)",
+    "optional": true,
+    "value": null
+  },
+  "MAX_VALUE": {
+    "description": "Maximum transfer amount (ignored if not specified)",
+    "optional": true,
+    "value": null
+  },
+  "DECIMALS": {
+    "description": "Token decimals for auto-converting wei to human-readable format (Not specified = raw wei)",
+    "optional": true,
+    "value": null
+  }
+}
+```
