@@ -16,8 +16,7 @@
         "tags": [
           "External"
         ],
-        "summary": "Retrieves cross-chain swaps detected within the requested timeframe.",
-        "description": "The timeframe between `from` and `to` must not exceed 30 minutes.",
+        "description": "Retrieves cross-chain swaps detected within the requested timeframe. The timeframe between `from` and `to` must not exceed 30 minutes.",
         "operationId": "ExportSwaps",
         "parameters": [
           {
@@ -170,8 +169,8 @@
         "tags": [
           "External"
         ],
-        "summary": "Retrieves cross-chain swaps by transaction hash or system id.",
-        "operationId": "ExportSwaps",
+        "description": "Retrieves cross-chain swaps by transaction hash or system id.",
+        "operationId": "ExportSwapsById",
         "parameters": [
           {
             "name": "identifier",
@@ -301,7 +300,7 @@
         "tags": [
           "External"
         ],
-        "summary": "Retrieves all blockchains tracked by XFlow.",
+        "description": "Retrieves all blockchains tracked by XFlow.",
         "operationId": "ExportSupportedChains",
         "responses": {
           "default": {
@@ -421,7 +420,7 @@
         "tags": [
           "External"
         ],
-        "summary": "Retrieves the tokens XFlow tracks for the specified blockchain.",
+        "description": "Retrieves the tokens XFlow tracks for the specified blockchain.",
         "operationId": "ExportSupportedTokens",
         "parameters": [
           {
@@ -563,7 +562,7 @@
         "tags": [
           "External"
         ],
-        "summary": "Returns all bridges whose on-chain contracts XFlow tracks across supported chains, sorted by volume.",
+        "description": "Returns all bridges whose on-chain contracts XFlow tracks across supported chains, sorted by volume.",
         "operationId": "GetBridges",
         "responses": {
           "default": {
