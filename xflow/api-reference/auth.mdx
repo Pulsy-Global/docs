@@ -1,0 +1,31 @@
+---
+title: "Authentication"
+description: "How to authenticate with the XFlow external API."
+---
+## How authentication works
+
+External endpoints are protected by an API key that must be sent in the `Authorization` header using the `Basic` scheme. The value after `Basic` must be a Base64-encoded credential string.
+
+The credential string is: `<client_id>:<api_key>`.
+
+Where:
+
+- `client_id` is your assigned client name or identifier.
+- `api_key` is your secret key.
+
+## Request format
+
+1. Build the credential string: `<client_id>:<api_key>`.
+2. Base64-encode the credential string.
+3. Send it in the `Authorization` header using `Basic`.
+
+### Example
+
+```bash
+curl -H "Authorization: Basic <base64(client_id:api_key)>" \
+  https://api.pulsy.app/v1/external/swaps
+```
+
+## Getting an API key
+
+To request an API key for external access, contact sales@pulsy.app.
