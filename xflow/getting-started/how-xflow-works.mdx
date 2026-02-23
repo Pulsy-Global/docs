@@ -2,7 +2,7 @@
 title: "How XFlow Works"
 description: "Overview of how XFlow tracks cross-chain transfers."
 ---
-## What XFlow is tracking
+## What XFlow is Tracking
 
 XFlow tracks cross-chain transfers by observing activity on multiple blockchains and bridge protocols, then correlating the inbound and outbound legs into a single, normalized transfer record. The goal is to provide a consistent, chain-agnostic view of a cross-chain transfer, including:
 
@@ -13,7 +13,7 @@ XFlow tracks cross-chain transfers by observing activity on multiple blockchains
 - Detection and completion timestamps.
 - Protocol attribution.
 
-## High-level architecture
+## High-Level Architecture
 
 XFlow’s pipeline is composed of three stages that run continuously:
 
@@ -43,7 +43,7 @@ XFlow uses a set of protocol-specific parsers (“engines”). Each engine knows
 
 The ingestion phase produces a preliminary transfer object with whatever data is immediately available. This object is stored as an internal record in a raw datastore, along with associated metadata extracted from the blockchain.
 
-## Stage 2: Enrichment and completion
+## Stage 2: Enrichment and Completion
 
 Cross-chain transfers rarely arrive as a fully complete record in a single pass. XFlow therefore runs a continuous completion service that attempts to fill in missing details for both sides of a transfer.
 
@@ -59,11 +59,11 @@ The completion process operates as follows:
 
 XFlow supports cases where the destination transaction appears before the source transaction, and continues revisiting incomplete transfers until an expiration window is reached.
 
-## Stage 3: Publication and storage
+## Stage 3: Publication and Storage
 
 Once a transfer is complete, XFlow persists a normalized record to its datastore for API consumers and analytics. Raw metadata remains available internally for auditability and further enrichment.
 
-## Data model summary
+## Data Model Summary
 
 At a high level, XFlow maintains two layers of data:
 

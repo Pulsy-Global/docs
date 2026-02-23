@@ -1,0 +1,64 @@
+---
+title: "Polling Data"
+description: "Polling-based XFlow data delivery"
+---
+## Overview
+This guide explains how to integrate with XFlow for real‑time cross-chain transfer data delivery and how to handle historical backfills.
+
+XFlow provides data in two complementary ways:
+- **Historical backfill:** delivered as CSV exports (split by year / month).
+- **Real‑time API:** delivered via the external API polling endpoint.
+
+The CSV schema mirrors the API response schema, so you can ingest once and use a single data model in your system.
+
+## Access & Authentication
+Reach out to [sales@pulsy.app](mailto:sales@pulsy.app) to coordinate an integration and request an API key. Once provisioned, follow the authentication instructions in the [Authentication guide](/xflow/api-reference/auth).
+
+## API Base URL
+Production: `https://api.pulsy.app`.
+
+## Main Polling Endpoint
+Transfers (swaps): `GET /v1/external/swaps`.
+
+See [Get Swaps](/xflow/api-reference/endpoints/get_swaps) for more details.
+
+**Required query parameters:**
+- `from`: ISO‑8601 timestamp (UTC recommended).
+- `to`: ISO‑8601 timestamp (UTC recommended).
+
+**Optional query parameter:**
+- `filter`: one of `Withdrawn`, `Deposited`, `Completed`, `Updated`.
+
+**Important constraint:**
+- The time window between `from` and `to` must not exceed 30 minutes.
+
+## Recommended Polling Strategy
+For accurate, forward‑only, and idempotent polling, use `filter=Completed` and the `completedAt` field as your cursor.
+
+**Recommended setup:**
+- Job A (real‑time): poll with no delay.
+- Job B (delayed): poll with a 48‑hour delay to capture late‑arriving transfers.
+
+**Cursor logic:**
+1. Ingest the historical CSV export.
+2. Start both pollers from `max(completedAt)` found in the CSV.
+3. After each API response, advance your cursor to the max `completedAt` returned by that response.
+
+`completedAt` is stable (it is set when a transfer record reaches its final state). This makes forward‑only polling safe.
+
+## Historical Backfill via CSV
+- CSV exports are provided for historical data (split by year / month).
+- Use CSVs for backfill. The external API is intended for real‑time polling only.
+- The polling API is not intended for deep historical backfill. Use CSV exports instead.
+- We periodically regenerate historical exports as protocols and patterns evolve. Implement a re‑fill flow so you can re‑ingest refreshed exports when provided.
+
+## Timestamp Fields (Polling & Reconciliation)
+Key timestamps available in both CSV and API:
+- `detected_at`: when a transfer was detected by XFlow.
+- `completedAt`: when a transfer was finalized and made available in the external API.
+- `updated_at`: when a transfer record was last changed.
+- `deposited_at`: inbound on‑chain transaction time.
+- `withdrawn_at`: outbound on‑chain transaction time.
+
+## Rate Limits & Integration Tiers
+Polling rate limits are set per integration tier and use case. Reach out to [sales@pulsy.app](mailto:sales@pulsy.app) to discuss your requirements and confirm limits.

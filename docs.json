@@ -35,7 +35,8 @@
             "group": "Getting Started",
             "pages": [
               "xflow/getting-started/overview",
-              "xflow/getting-started/how-xflow-works"
+              "xflow/getting-started/how-xflow-works",
+              "xflow/getting-started/polling-data"
             ]
           },
           {
