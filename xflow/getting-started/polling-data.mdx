@@ -18,9 +18,7 @@ Reach out to [sales@pulsy.app](mailto:sales@pulsy.app) to coordinate an integrat
 Production: `https://api.pulsy.app`.
 
 ## Main Polling Endpoint
-Transfers (swaps): `GET /v1/external/swaps`.
-
-See [Get Swaps](/xflow/api-reference/endpoints/get_swaps) for more details.
+Transfers (swaps): `GET /v1/external/swaps`. See [Get Swaps](/xflow/api-reference/endpoints/get_swaps) for more details.
 
 **Required query parameters:**
 - `from`: ISO‑8601 timestamp (UTC recommended).
@@ -54,11 +52,11 @@ For accurate, forward‑only, and idempotent polling, use `filter=Completed` and
 
 ## Timestamp Fields (Polling & Reconciliation)
 Key timestamps available in both CSV and API:
-- `detected_at`: when a transfer was detected by XFlow.
+- `detectedAt`: when a transfer was detected by XFlow.
 - `completedAt`: when a transfer was finalized and made available in the external API.
-- `updated_at`: when a transfer record was last changed.
-- `deposited_at`: inbound on‑chain transaction time.
-- `withdrawn_at`: outbound on‑chain transaction time.
+- `updatedAt`: when a transfer record was last changed.
+- `depositedAt`: inbound on‑chain transaction time.
+- `withdrawnAt`: outbound on‑chain transaction time.
 
 ## Rate Limits & Integration Tiers
 Polling rate limits are set per integration tier and use case. Reach out to [sales@pulsy.app](mailto:sales@pulsy.app) to discuss your requirements and confirm limits.
