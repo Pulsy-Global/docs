@@ -1,0 +1,44 @@
+---
+title: "USD Mismatches"
+description: "How XFlow interprets USD differences between transfer legs."
+---
+## USD Mismatch Status
+
+This document explains what USD mismatch status means for cross-chain transfers, how the system calculates it, and where external integrators can read it in the API. It also summarizes the inputs, thresholds, and edge cases that affect the final status so you can interpret it correctly in downstream systems.
+
+XFlow matches swaps deterministically using on-chain data wherever possible. Our team investigates each protocol’s mechanics and source code to analyze cross-chain processing logic and ensure our matching uses available on-chain data. In rare cases, unknown or not-yet-implemented patterns can slip through, or bridges themselves process transfers in ways where the USD value on the deposit leg does not match the USD value on the withdrawal leg (for example, processing transfers in batches). We expose the USD mismatch status through the external API so clients can make their own assessments. XFlow does not assert fraud or failure, it simply indicates when the input and output USD values look inconsistent.
+
+## Where It Appears In The External API
+
+The external cross-chain transfer endpoints return these fields:
+
+- `depositUsdAmount`: USD equivalent for the source/deposit leg.
+- `withdrawnUsdAmount`: USD equivalent for the destination/withdrawal leg.
+- `usdMismatchStatus`: enum string describing whether the USD amounts are within an acceptable range.
+
+## Status Values
+
+`usdMismatchStatus` can be one of:
+
+- `Unprocessed`: USD amounts were not processed yet, so mismatch was not evaluated.
+- `NotFound`: USD rates were unavailable for at least one side.
+- `MismatchDetected`: the difference between deposited and withdrawn USD is unusually high.
+- `OK`: difference is within the acceptable range.
+
+## How USD Amounts Are Calculated
+
+For each transfer side (source and destination), the system calculates the USD amount as:
+
+`value`: `tokenAmount` × `usdRate`: token USD rate at the swap timestamp.
+
+USD rates are retrieved from external pricing sources at or near the transfer timestamp. If the USD rate is unavailable or token information is missing, the USD amount remains `null` for that side, which leads to `NotFound`.
+
+## Mismatch Detection
+
+Step-by-step logic:
+
+1. If either `depositUsdAmount` or `withdrawnUsdAmount` is `null`, status = `NotFound`.
+2. If exactly one of the USD amounts is `0`, status = `MismatchDetected`. If both are `0`, status = `OK`.
+3. Compute `diff = abs(depositUsdAmount - withdrawnUsdAmount)`. Mismatch is detected when `diff >= 100` and the relative difference is at least 10%.
+
+If none of the mismatch conditions are met, status = `OK`.
