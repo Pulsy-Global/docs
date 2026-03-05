@@ -34,7 +34,7 @@ Transfers (swaps): `GET /v1/external/swaps`. See [Get Swaps](/xflow/api-referenc
 For accurate, forward‑only, and idempotent polling, use `filter=Completed` and the `completedAt` field as your cursor.
 
 **Recommended setup:**
-- Job A (real‑time): poll with no delay.
+- Job A (real‑time): poll with a small delay (5–10 minutes), as most cross‑chain transfers settle within that timeframe.
 - Job B (delayed): poll with a 48‑hour delay to capture late‑arriving transfers.
 
 **Cursor logic:**
