@@ -41,6 +41,12 @@
             ]
           },
           {
+            "group": "Supported Bridges",
+            "pages": [
+              "xflow/supported-bridges/overview"
+            ]
+          },
+          {
             "group": "API Reference",
             "pages": [
               "xflow/api-reference/auth",
@@ -49,12 +55,6 @@
               "xflow/api-reference/endpoints/get_bridges",
               "xflow/api-reference/endpoints/get_chains",
               "xflow/api-reference/endpoints/get_tokens"
-            ]
-          },
-          {
-            "group": "Supported Bridges",
-            "pages": [
-              "xflow/supported-bridges/overview"
             ]
           }
         ]
