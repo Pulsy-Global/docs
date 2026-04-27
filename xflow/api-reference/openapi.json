@@ -44,7 +44,8 @@
               "enum": [
                 "Withdrawn",
                 "Deposited",
-                "Completed"
+                "Completed",
+                "Updated"
               ],
               "type": "string",
               "default": "Withdrawn"
@@ -741,7 +742,7 @@
               "Malfunction"
             ],
             "type": "string",
-            "description": "Current bridge status in XFlow."
+            "description": "Current bridge status in XFlow.\r\n`Operational` Transfers were captured from this bridge in the last 24 hours;\r\n`Warning` No transfers were captured from this bridge in the last 24 hours;\r\n`Malfunction` No transfers were captured from this bridge in the last 7 days."
           }
         },
         "additionalProperties": false,
@@ -959,6 +960,11 @@
           "completedAt": {
             "type": "string",
             "description": "Date and time when a swap was completed by XFlow and became available in the external API.",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date and time when a swap was updated by XFlow.",
             "format": "date-time"
           },
           "bridge": {
