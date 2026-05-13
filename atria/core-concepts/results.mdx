@@ -1,0 +1,38 @@
+---
+title: "Results"
+description: "Understand what a feed emits when it matches."
+---
+
+# Results
+
+A result is the structured object emitted by a feed after its filter and optional function complete.
+
+## When Results Are Created
+
+Atria creates a result only when feed logic returns a JSON-safe value. Returning `null` or `undefined` means no result is published.
+
+## Result Wrapper
+
+```json
+{
+  "feedId": "...",
+  "outputIds": ["..."],
+  "data": {},
+  "isTestExecution": false,
+  "blockNumber": "123"
+}
+```
+
+## `data`
+
+The `data` field contains the object returned by the feed. Keep this shape stable once a feed is in use, so the systems or actions connected to the feed can rely on consistent fields.
+
+For example, a native transfer feed might return `nativeTransfers`, while an ERC-20 transfer feed might return `transfers`. Those names become part of the contract between the feed and the action connected to it, so avoid changing them casually once a feed is in use.
+
+## Where Results Go
+
+Results are published to the feed result stream and picked up by the [Delivery service](/atria/architecture/delivery). In the Dashboard, open a feed and use the **Live Preview** tab to inspect the latest result and stream new ones in real time.
+
+Results are not meant to be a replacement for a full warehouse or analytics store. They are the operational output of a feed: the payload used to trigger an action, alert, workflow step, or integration.
+
+For action connectors, see [outputs](/atria/core-concepts/outputs).

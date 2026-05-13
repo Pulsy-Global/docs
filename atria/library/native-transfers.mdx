@@ -1,0 +1,57 @@
+---
+title: "EVM Native Transfers"
+description: "Track native token transfers with a library template."
+---
+
+# EVM Native Transfers
+
+The EVM Native Transfers template tracks native token transfers, such as ETH, POL, BNB, AVAX, or other chain gas assets.
+
+Source: [`evm-native-transfers`](https://github.com/Pulsy-Global/atria-library/tree/main/library/evm-native-transfers)
+
+## Data Type
+
+This template uses [`BlockWithTransactions`](/atria/core-concepts/data-types). It reads `stream.block.transactions`.
+
+## Configuration
+
+- `FROM_ADDRESS`: Optional sender address filter.
+- `TO_ADDRESS`: Optional recipient address filter.
+- `MIN_VALUE`: Optional minimum native token amount.
+- `MAX_VALUE`: Optional maximum native token amount.
+
+## Logic
+
+The filter:
+
+- Skips zero-value transactions.
+- Converts configured thresholds with `ethers.parseEther`.
+- Compares transaction values as `BigInt`.
+- Returns `null` when no transfer matches.
+
+## Output
+
+When at least one transaction matches, the feed returns a result with the matching transfers inside `nativeTransfers`.
+
+```json
+{
+  "metadata": {
+    "networkId": "ethereum-mainnet",
+    "blockNumber": "123",
+    "isReorg": false
+  },
+  "timestamp": "0x...",
+  "count": 1,
+  "nativeTransfers": [
+    {
+      "hash": "0x...",
+      "from": "0x...",
+      "to": "0x...",
+      "valueWei": "0xde0b6b3a7640000",
+      "valueEth": "1.0"
+    }
+  ]
+}
+```
+
+If no transaction matches the configured sender, recipient, or value range, the filter returns `null` and the feed does not emit a result.

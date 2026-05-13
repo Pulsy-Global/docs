@@ -1,0 +1,30 @@
+---
+title: "Ingestion"
+description: "Learn how Atria reads blockchain data for feeds."
+---
+
+# Ingestion
+
+The Ingestor connects to configured blockchain networks, reads block data, and writes normalized payloads into Atria's block store. EVM networks are supported today, with additional chain families on the roadmap.
+
+## What It Reads
+
+- Blocks with transactions.
+- Blocks with logs.
+- Debug traces.
+
+## Network Flow
+
+```mermaid
+flowchart LR
+  RPC[HTTP RPC] --> Ingestor
+  WS[WebSocket blocks] --> Ingestor
+  Ingestor --> Blocks[Block data store]
+  Ingestor --> State[Chain state store]
+```
+
+## Realtime and Fallback
+
+The Ingestor can listen for new blocks over WebSocket and uses polling fallback so feeds can continue processing when a WebSocket signal is delayed or unavailable.
+
+For chain reorganizations, see [reorg handling](/atria/architecture/reorg-handling).

@@ -1,0 +1,32 @@
+---
+title: "Local Development"
+description: "Set up a practical local development flow."
+---
+
+# Local Development
+
+Local development is useful for learning the system, testing feed logic, and validating self-managed deployment settings.
+
+For the local quick start, see the [Atria GitHub repository](https://github.com/Pulsy-Global/atria).
+
+## Typical Local Stack
+
+- PostgreSQL.
+- NATS.
+- Management backend.
+- Dashboard.
+- Ingestor.
+- Runtime.
+- Delivery.
+
+## Recommended Flow
+
+1. Start infrastructure.
+2. Configure one network.
+3. Confirm block ingestion.
+4. Create a simple feed.
+5. Test the filter on a known block.
+6. Attach a webhook output.
+7. Start the feed and inspect results.
+
+For testing logic, see [testing feeds](/atria/operations/testing-feeds).

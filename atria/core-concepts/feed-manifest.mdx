@@ -1,126 +1,79 @@
 ---
 title: "Feed Manifest"
+description: "Understand the definition behind a feed."
 ---
 
-A feed manifest is the blueprint Atria uses to understand a feed. It names the feed, points to the chain data you care about, and tells the runtime which files to execute.
+# Feed Manifest
 
-Here is an example manifest from the public Atria library: [EVM ERC-20 Transfers](https://github.com/Pulsy-Global/atria-library/tree/main/library/evm-erc-20-transfers).
+A feed manifest is the declarative definition behind every feed. It captures the feed's identity, source data, runtime code, and connected outputs in a form Atria can provision and operate.
 
-The manifest definition includes `manifest.json`, a filter template `filter.js.hbs`, and a `filter-config.json` that defines filter parameters.
+## How Atria Uses It
+
+The Orchestrator uses the manifest definition to validate the required fields and turn the feed definition into an executable feed record.
+
+```mermaid
+flowchart LR
+  Manifest[Feed manifest] --> Validate[Validate required fields]
+  Validate --> Feed[Create or update feed]
+  Feed --> Runtime[Runtime executes feed]
+  Feed --> Delivery[Outputs connect actions]
+```
+
+The manifest is not runtime state. It does not store the current cursor, feed status, recent results, delivery attempts, or deployment history. Those are managed by Atria after the feed exists.
+
+## Example
 
 ```json
 {
-  "name": "EVM ERC-20 Transfers",
-  "version": "1.0.1",
-  "description": "Filter token transactions - configure minimum/maximum values & track specific ERC-20 transfers",
-  "author": "Pulsy Atria Team",
+  "name": "Large Native Transfers",
+  "version": "1.0.0",
+  "description": "Emits when native transfers match the configured criteria.",
+  "author": "Your Team",
   "config": {
     "source": {
       "networkId": "ethereum-mainnet",
-      "networkFamily": "EVM",
-      "dataType": "BlockWithLogs",
+      "dataType": "BlockWithTransactions",
       "startBlock": null,
       "endBlock": null
     },
     "runtime": {
       "errorHandling": "ContinueOnError",
       "filter": {
-        "path": "filter.js.hbs",
-        "config": "filter-config.json",
-        "engine": "javascript"
+        "path": "filter.js"
       }
     },
     "destination": {
+      "outputs": ["operations-webhook"],
       "errorHandling": "ContinueOnError"
     }
   }
 }
 ```
 
-The companion files keep code and configuration together:
+## Main Fields
 
-`filter.js.hbs`: a Handlebars template for the JavaScript filter. Placeholders such as token address, sender/receiver, min/max amount, and decimals are filled before deployment.
+- `name`: Human-readable feed name.
+- `version`: Feed definition version.
+- `description`: Short explanation of what the feed detects or enables.
+- `author`: Optional owner or team label.
+- `config.source.networkId`: Network identifier, such as `ethereum-mainnet`.
+- `config.source.dataType`: Payload type passed to the filter. See [data types](/atria/core-concepts/data-types).
+- `config.source.startBlock`: Optional first block to process.
+- `config.source.endBlock`: Optional last block to process.
+- `config.runtime.filter.path`: Path to the filter code used by the feed.
+- `config.runtime.function.path`: Optional path to post-filter function code when a function is used.
+- `config.runtime.errorHandling`: Runtime error strategy for feed execution.
+- `config.destination.outputs`: Optional list of output names to connect to the feed.
+- `config.destination.errorHandling`: Delivery-side error strategy.
 
-```javascript
-function main(stream) {
-    const TOKEN_ADDRESS = {{#if TOKEN_ADDRESS}}"{{TOKEN_ADDRESS}}"{{else}}null{{/if}};
-    const MIN_VALUE = {{#if MIN_VALUE}}{{MIN_VALUE}}{{else}}null{{/if}};
-    const MAX_VALUE = {{#if MAX_VALUE}}{{MAX_VALUE}}{{else}}null{{/if}};
-    const FROM_ADDRESS = {{#if FROM_ADDRESS}}"{{FROM_ADDRESS}}"{{else}}null{{/if}};
-    const TO_ADDRESS = {{#if TO_ADDRESS}}"{{TO_ADDRESS}}"{{else}}null{{/if}};
-    const DECIMALS = {{#if DECIMALS}}{{DECIMALS}}{{else}}null{{/if}};
+## What Gets Provisioned
 
-    const iface = new ethers.Interface([{ name: 'Transfer', type: 'event', inputs: [
-        { indexed: true, name: 'from', type: 'address' },
-        { indexed: true, name: 'to', type: 'address' },
-        { indexed: false, name: 'value', type: 'uint256' }
-    ] }]);
+When Atria creates or updates a feed from a manifest, the feed receives the manifest's name, version, description, network, data type, start and end block, filter path, optional function path, and connected outputs.
 
-    const topic = iface.getEvent('Transfer').topicHash;
+Outputs are resolved by name. For example, if `config.destination.outputs` contains `operations-webhook`, Atria looks for an output with that name and connects it to the feed.
 
-    const erc20Transfers = (stream.logs || [])
-        .filter(l => l.topics?.[0]?.toLowerCase() === topic)
-        .map(log => {
-            try {
-                const { args } = iface.parseLog(log);
-                return { hash: log.transactionHash, from: args.from, to: args.to, value: args.value.toString(), address: log.address };
-            } catch { return null; }
-        })
-        .filter(t => {
-            if (!t) return false;
-            const value = BigInt(t.value);
-            if (DECIMALS != null) {
-                if (MIN_VALUE != null && value < ethers.parseUnits(MIN_VALUE.toString(), DECIMALS)) return false;
-                if (MAX_VALUE != null && value > ethers.parseUnits(MAX_VALUE.toString(), DECIMALS)) return false;
-            } else {
-                if (MIN_VALUE != null && value < BigInt(MIN_VALUE)) return false;
-                if (MAX_VALUE != null && value > BigInt(MAX_VALUE)) return false;
-            }
-            if (TOKEN_ADDRESS && t.address.toLowerCase() !== TOKEN_ADDRESS.toLowerCase()) return false;
-            if (FROM_ADDRESS && t.from.toLowerCase() !== FROM_ADDRESS.toLowerCase()) return false;
-            if (TO_ADDRESS && t.to.toLowerCase() !== TO_ADDRESS.toLowerCase()) return false;
-            return true;
-        });
+## Manifest and Code Files
 
-    if (erc20Transfers.length === 0) return null;
+The manifest points to code, but it does not contain the code itself. The filter path tells Atria which file to load for the feed's [filter](/atria/core-concepts/filters). If the feed uses a [function](/atria/core-concepts/functions), the function path points to that code as well.
 
-    return { metadata: stream.metadata, count: erc20Transfers.length, transfers: erc20Transfers };
-}
-```
-
-`filter-config.json`: the schema for those placeholders. It describes each setting, notes whether it is optional, and provides default values.
-
-```json
-{
-  "FROM_ADDRESS": {
-    "description": "If not specified, this filter is ignored",
-    "optional": true,
-    "value": null
-  },
-  "TO_ADDRESS": {
-    "description": "If not specified, this filter is ignored",
-    "optional": true,
-    "value": null
-  },
-  "TOKEN_ADDRESS": {
-    "description": "If not specified, this filter is ignored",
-    "optional": true,
-    "value": null
-  },
-  "MIN_VALUE": {
-    "description": "Minimum transfer amount (ignored if not specified)",
-    "optional": true,
-    "value": null
-  },
-  "MAX_VALUE": {
-    "description": "Maximum transfer amount (ignored if not specified)",
-    "optional": true,
-    "value": null
-  },
-  "DECIMALS": {
-    "description": "Token decimals for auto-converting wei to human-readable format (Not specified = raw wei)",
-    "optional": true,
-    "value": null
-  }
-}
-```
+For practical examples of feed manifests, see the [Atria Library](/atria/library/overview).

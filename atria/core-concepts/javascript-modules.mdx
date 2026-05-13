@@ -1,0 +1,102 @@
+---
+title: "JavaScript Modules"
+description: "See the JavaScript helpers available inside filters."
+---
+
+# JavaScript Modules
+
+In the current runtime, filters are authored in JavaScript and can use a small set of bundled modules. These modules are available through `require(...)` inside the filter.
+
+Only modules registered by the runtime can be imported. A filter cannot install packages dynamically or import arbitrary npm dependencies.
+
+## `ethers`
+
+Use `ethers` for EVM-specific parsing, encoding, decoding, and unit conversion.
+
+```javascript
+const ethers = require("ethers");
+
+function main(stream) {
+  // 0xde0b6b3a7640000 is 1 ETH in wei, encoded as a hex quantity.
+  const valueEth = ethers.formatEther("0xde0b6b3a7640000");
+
+  return {
+    metadata: stream.metadata,
+    valueEth
+  };
+}
+```
+
+Common uses:
+
+- Build an ABI interface with `new ethers.Interface(...)`.
+- Parse event logs with `iface.parseLog(...)`.
+- Read an event topic with `iface.getEvent("Transfer").topicHash`.
+- Convert native token units with `ethers.parseEther(...)` and `ethers.formatEther(...)`.
+- Convert token units with `ethers.parseUnits(...)` and `ethers.formatUnits(...)`.
+- Work with large integer values safely through `BigInt`-compatible values.
+
+Use `ethers` when the feed needs low-level EVM handling or precise token amount conversion.
+
+## `@atria/sdk`
+
+Use `@atria/sdk` for Atria-provided helpers that sit above raw `ethers` usage.
+
+```javascript
+const atria = require("@atria/sdk");
+
+function main(stream) {
+  const decoded = atria.evm.decodeEVMLogs(stream.logs || [], [
+    [
+      "event Transfer(address indexed from, address indexed to, uint256 value)"
+    ]
+  ]);
+
+  if (decoded.length === 0) return null;
+
+  return {
+    metadata: stream.metadata,
+    transfers: decoded
+  };
+}
+```
+
+Current helper:
+
+- `atria.evm.decodeEVMLogs(data, abis)`
+
+`decodeEVMLogs` accepts either an array of logs or an array of receipt-like objects with `logs`. It tries to decode each log against the provided ABIs. Logs that do not match are ignored. Decoded logs include a `decodedLog` object with `name`, `signature`, and named `args`.
+
+Use `@atria/sdk` when you want a feed to decode EVM logs without writing the full parse loop yourself.
+
+## `@atria/kv`
+
+Use `@atria/kv` for lightweight feed state when KV access is enabled for the feed runtime.
+
+```javascript
+const kv = require("@atria/kv");
+
+async function main(stream) {
+  const seen = kv.bucket("seen-blocks");
+  const key = stream.metadata.blockNumber;
+
+  if (await seen.get(key)) return null;
+
+  await seen.add(key, true);
+
+  return {
+    metadata: stream.metadata,
+    firstSeen: key
+  };
+}
+```
+
+Use KV for compact workflow state, lookup values, and simple deduplication. Do not use it as a warehouse, analytics store, or large event archive.
+
+For the full list of bucket operations, see [KV storage](/atria/core-concepts/kv-storage).
+
+## Module Boundaries
+
+Filters can only import the modules that Atria bundles into the runtime. For example, `require("ethers")` works, but `require("lodash")` fails unless that module has been added to the runtime. If you need a small helper, define it in the filter file itself.
+
+See [filters](/atria/core-concepts/filters), [KV storage](/atria/core-concepts/kv-storage), and [security and sandboxing](/atria/architecture/security-and-sandboxing).

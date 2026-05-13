@@ -1,0 +1,56 @@
+---
+title: "Data Types"
+description: "Explore the blockchain payloads feeds can process."
+---
+
+# Data Types
+
+Each feed subscribes to one blockchain payload type. The selected data type determines the shape passed to `main(stream)` in your filter.
+
+## `BlockWithTransactions`
+
+Use this for native token transfers and transaction-level monitoring.
+
+```json
+{
+  "metadata": { "networkId": "ethereum-mainnet", "blockNumber": "123", "isReorg": false },
+  "block": {
+    "number": "0x7b",
+    "hash": "0x...",
+    "timestamp": "0x...",
+    "transactions": [
+      { "hash": "0x...", "from": "0x...", "to": "0x...", "value": "0x..." }
+    ]
+  }
+}
+```
+
+## `BlockWithLogs`
+
+Use this for contract events, including ERC-20 `Transfer` logs.
+
+```json
+{
+  "metadata": { "networkId": "ethereum-mainnet", "blockNumber": "123", "isReorg": false },
+  "logs": [
+    { "address": "0x...", "transactionHash": "0x...", "data": "0x...", "topics": ["0x..."] }
+  ]
+}
+```
+
+## `BlockWithTraces`
+
+Use this for debug trace workflows.
+
+```json
+{
+  "metadata": { "networkId": "ethereum-mainnet", "blockNumber": "123", "isReorg": false },
+  "traces": []
+}
+```
+
+## Choosing a Type
+
+- Use transactions for native transfers.
+- Use logs for emitted smart contract events.
+- Use traces for internal calls and execution-level analysis.

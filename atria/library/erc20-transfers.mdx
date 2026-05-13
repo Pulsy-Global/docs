@@ -1,0 +1,59 @@
+---
+title: "EVM ERC-20 Transfers"
+description: "Track ERC-20 transfers with a library template."
+---
+
+# EVM ERC-20 Transfers
+
+The EVM ERC-20 Transfers template tracks ERC-20 `Transfer(address,address,uint256)` events.
+
+Source: [`evm-erc-20-transfers`](https://github.com/Pulsy-Global/atria-library/tree/main/library/evm-erc-20-transfers)
+
+## Data Type
+
+This template uses [`BlockWithLogs`](/atria/core-concepts/data-types). It reads `stream.logs`.
+
+## Configuration
+
+- `TOKEN_ADDRESS`: Optional token contract filter.
+- `FROM_ADDRESS`: Optional sender address filter.
+- `TO_ADDRESS`: Optional recipient address filter.
+- `MIN_VALUE`: Optional minimum amount.
+- `MAX_VALUE`: Optional maximum amount.
+- `DECIMALS`: Optional token decimals for human-readable thresholds.
+
+## Logic
+
+The filter:
+
+- Matches the ERC-20 `Transfer` event topic.
+- Parses logs with `ethers.Interface`.
+- Compares token amount thresholds.
+- Treats min and max as raw base units if `DECIMALS` is omitted.
+- Returns `null` when no transfer matches.
+
+## Output
+
+When at least one log matches, the feed returns a result with the matching ERC-20 transfers inside `transfers`.
+
+```json
+{
+  "metadata": {
+    "networkId": "ethereum-mainnet",
+    "blockNumber": "123",
+    "isReorg": false
+  },
+  "count": 1,
+  "transfers": [
+    {
+      "hash": "0x...",
+      "from": "0x...",
+      "to": "0x...",
+      "value": "1000000000000000000",
+      "address": "0x..."
+    }
+  ]
+}
+```
+
+`value` is the raw token amount from the ERC-20 event. If no log matches the configured token, sender, recipient, or value range, the filter returns `null` and the feed does not emit a result.

@@ -16,15 +16,62 @@
           {
             "group": "Getting Started",
             "pages": [
-              "atria/getting-started/overview"
+              "atria/getting-started/overview",
+              "atria/getting-started/how-atria-works",
+              "atria/getting-started/key-use-cases"
             ]
           },
           {
             "group": "Core Concepts",
-              "pages": [
+            "pages": [
               "atria/core-concepts/what-is-a-feed",
+              "atria/core-concepts/feed-lifecycle",
+              "atria/core-concepts/cursors-and-block-delay",
+              "atria/core-concepts/data-types",
+              "atria/core-concepts/filters",
+              "atria/core-concepts/javascript-modules",
+              "atria/core-concepts/functions",
+              "atria/core-concepts/results",
+              "atria/core-concepts/outputs",
+              "atria/core-concepts/kv-storage",
+              "atria/core-concepts/tags",
               "atria/core-concepts/feed-manifest"
-              ]
+            ]
+          },
+          {
+            "group": "Architecture",
+            "pages": [
+              "atria/architecture/system-overview",
+              "atria/architecture/ingestion",
+              "atria/architecture/runtime",
+              "atria/architecture/delivery",
+              "atria/architecture/orchestrator",
+              "atria/architecture/storage-and-messaging",
+              "atria/architecture/leases-and-cursors",
+              "atria/architecture/code-storage",
+              "atria/architecture/reorg-handling",
+              "atria/architecture/security-and-sandboxing"
+            ]
+          },
+          {
+            "group": "Operations",
+            "pages": [
+              "atria/operations/deployment-options",
+              "atria/operations/self-hosting",
+              "atria/operations/local-development",
+              "atria/operations/network-configuration",
+              "atria/operations/testing-feeds",
+              "atria/operations/running-feeds",
+              "atria/operations/delivery-failures"
+            ]
+          },
+          {
+            "group": "Atria Library",
+            "pages": [
+              "atria/library/overview",
+              "atria/library/native-transfers",
+              "atria/library/erc20-transfers"
+            ]
           }
         ]
       },

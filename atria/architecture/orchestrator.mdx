@@ -1,0 +1,29 @@
+---
+title: "Orchestrator"
+description: "Learn how Atria coordinates deployments and feed health."
+---
+
+# Orchestrator
+
+The Orchestrator coordinates feed deployment, status transitions, delivery configuration requests, and runtime health.
+
+## Responsibilities
+
+- Handles feed deploy requests.
+- Tracks `Pending`, `Running`, `Paused`, `Error`, and `Completed` transitions.
+- Confirms runtime deployment events.
+- Responds to delivery services with output configuration.
+- Provisions feeds and outputs from manifests.
+
+## Control Flow
+
+```mermaid
+sequenceDiagram
+  participant Control as Control plane
+  participant Orchestrator
+  participant Runtime
+  Control->>Orchestrator: feed.deploy.req
+  Orchestrator->>Runtime: deploy feed
+  Runtime->>Orchestrator: feed.deployed
+  Orchestrator->>Control: update feed status
+```

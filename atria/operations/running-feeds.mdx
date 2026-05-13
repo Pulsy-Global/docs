@@ -1,0 +1,28 @@
+---
+title: "Running Feeds"
+description: "Understand what happens while feeds are running."
+---
+
+# Running Feeds
+
+When a feed is running, the Runtime claims the feed with a lease, reads block data, executes logic, and advances the feed cursor. The lease is the runtime's temporary ownership marker, so another runtime instance does not process the same feed at the same time.
+
+## Start Block
+
+If a feed has a `startBlock`, processing begins there. If not, the runtime can start from the current chain head.
+
+## Block Delay
+
+A feed can use a block delay so it processes blocks only after the chain has advanced beyond them. This can reduce reorg risk.
+
+## Cursor
+
+The cursor stores the next block to process. If the feed restarts, it resumes from the cursor.
+
+See [cursors and block delay](/atria/core-concepts/cursors-and-block-delay).
+
+## Pausing
+
+Feeds can be paused manually or by the system after repeated runtime or delivery failures.
+
+See [feed lifecycle](/atria/core-concepts/feed-lifecycle).

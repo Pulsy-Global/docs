@@ -1,0 +1,30 @@
+---
+title: "Atria Library"
+description: "Explore reusable feed templates for Atria."
+---
+
+# Atria Library
+
+The Atria Library is a curated collection of reusable feed templates. Each template packages a manifest, JavaScript filter template, and configuration schema.
+
+Repository: [Pulsy-Global/atria-library](https://github.com/Pulsy-Global/atria-library)
+
+## Current Templates
+
+- [EVM Native Transfers](/atria/library/native-transfers)
+- [EVM ERC-20 Transfers](/atria/library/erc20-transfers)
+
+## Template Structure
+
+```text
+library/<template-slug>/
+  manifest.json
+  filter.js.hbs
+  filter-config.json
+```
+
+## Why It Exists
+
+Templates help teams start from known feed patterns instead of writing every feed definition from scratch. They are also useful references for AI agents generating new Atria feed logic.
+
+For the manifest format, see [feed manifest](/atria/core-concepts/feed-manifest).

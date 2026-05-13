@@ -1,0 +1,56 @@
+---
+title: "Filters"
+description: "Learn how filters select and shape feed emissions."
+---
+
+# Filters
+
+A filter is the per-feed event handling step that runs against each payload from the feed's selected data type. It is not the whole feed and it is not the whole workflow. It is the part of the feed that inspects the current `stream`, decides whether this payload should emit, and can shape the object that gets emitted.
+
+In the current runtime, filters are authored in JavaScript. A filter receives `stream` and returns either a result object or no output.
+
+## Required Shape
+
+Every filter must define `main(stream)`. Atria calls this function for each payload assigned to the feed. Your code goes inside `main`.
+
+```javascript
+function main(stream) {
+  // 1. Inspect the incoming payload.
+  const blockNumber = stream.metadata?.blockNumber;
+
+  // 2. Decide whether this payload should emit.
+  if (!blockNumber) return null;
+
+  // 3. Return the payload shape you want the feed to emit.
+  return {
+    metadata: stream.metadata,
+    blockNumber
+  };
+}
+```
+
+## Return Behavior
+
+- Return `null` or `undefined` to emit no output.
+- Return a JSON-serializable object to emit a result.
+- Avoid returning very large objects. The default filter output limit is 8 MB, controlled by the runtime `MaxOutputSizeKB` setting.
+
+This return behavior is important because it makes a feed selective and programmable at the event boundary. Atria does not treat every block, transaction, or log as something that must be emitted. Your filter is where the feed answers two questions: should this payload emit, and what should the emitted payload look like?
+
+## Available Modules
+
+Filters can use bundled runtime modules:
+
+- `ethers` for EVM encoding, decoding, units, and ABI helpers.
+- `@atria/sdk` for Atria helper functions such as EVM log decoding.
+- `@atria/kv` for feed-accessible key-value storage when enabled.
+
+See [JavaScript modules](/atria/core-concepts/javascript-modules) for more detail.
+
+## Execution Model
+
+Filters run inside an embedded V8 engine. The runtime serializes input to JSON, calls `main`, then deserializes the returned value.
+
+The filter should be deterministic and quick. It should parse the incoming payload, check the event condition, and return a compact object that the next workflow step can understand. Keep heavier enrichment, integration-specific formatting, or optional business-specific computation in a [function](/atria/core-concepts/functions) when that separation makes the feed easier to operate.
+
+Learn more in [runtime architecture](/atria/architecture/runtime) and [security and sandboxing](/atria/architecture/security-and-sandboxing).

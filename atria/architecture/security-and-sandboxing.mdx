@@ -1,0 +1,24 @@
+---
+title: "Security and Sandboxing"
+description: "See how Atria keeps feed execution constrained."
+---
+
+# Security and Sandboxing
+
+Atria runs feed filters in a constrained JavaScript environment. The goal is to let teams write useful feed logic while limiting runtime risk.
+
+## Sandbox Controls
+
+The JavaScript wrapper and runtime disable or constrain risky behavior:
+
+- `eval` is disabled.
+- The `Function` constructor is blocked.
+- WebAssembly, shared memory primitives, and atomics are removed.
+- Common prototypes are frozen.
+- Console output is suppressed.
+- Execution timeout is enforced.
+- Heap, stack, and output size limits are enforced.
+
+## Module Loading
+
+Filters can only `require` modules made available by the runtime configuration. Current bundled modules include `ethers`, `@atria/sdk`, and `@atria/kv`.

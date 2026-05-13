@@ -1,0 +1,46 @@
+---
+title: "Outputs"
+description: "Learn how feed results trigger workflow outputs."
+---
+
+# Outputs
+
+Outputs define where Atria sends matching feed results. A feed can be connected to one or more outputs.
+
+## Webhook Outputs
+
+A webhook output connects a feed to an HTTP endpoint. When the feed emits a result, Atria sends a webhook request so the connected service can react to the on-chain event.
+
+Webhook is currently the only supported output type. Additional output connectors are on the roadmap.
+
+Webhook outputs are commonly used to trigger internal services, automation endpoints, alerting flows, risk checks, operations processes, or integration layers. The endpoint decides what action to take from the feed result it receives.
+
+## Webhook Payload
+
+When a feed emits a result, Atria wraps the user-defined feed output before sending the webhook. The fields returned by the filter, or by the optional function when one is configured, appear inside `data`.
+
+```json
+{
+  "feedId": "...",
+  "outputIds": ["..."],
+  "data": {
+    "userDefinedField": "...",
+    "anotherUserDefinedField": "...",
+    "nestedUserDefinedObject": {}
+  },
+  "isTestExecution": false,
+  "blockNumber": "123"
+}
+```
+
+In this shape, everything inside `data` is defined by your feed logic. Atria adds the outer wrapper fields such as `feedId`, `outputIds`, `isTestExecution`, and `blockNumber`.
+
+Fields from the original blockchain payload only appear in the webhook if the feed returns them inside `data`. For example, reorg metadata is available to filters as `stream.metadata.isReorg`; if the feed returns `metadata`, the webhook can include it as `data.metadata.isReorg`.
+
+## Delivery Behavior
+
+The Delivery service picks up feed results from the result stream and invokes configured webhook targets. By default, if a webhook call fails, Atria retries it after 30 seconds. After 30 failed delivery attempts for the same result, Atria pauses the feed with a delivery failure reason.
+
+Webhook-connected actions should be designed to accept retried or delayed messages. Blockchain networks can reorganize, connected systems can time out, and delivery can retry. The connected system should use a stable idempotency key built from the fields that matter for that action, such as `feedId`, `blockNumber`, transaction or log identifiers, and reorg metadata when the feed exposes it.
+
+See [delivery architecture](/atria/architecture/delivery) for how output delivery works after a feed emits a result.

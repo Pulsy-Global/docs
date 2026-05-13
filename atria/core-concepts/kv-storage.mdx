@@ -1,0 +1,87 @@
+---
+title: "KV Storage"
+description: "Use lightweight state in Atria workflows."
+---
+
+# KV Storage
+
+Atria includes key-value storage for lightweight workflow state.
+
+KV storage is useful when feed logic needs a small amount of memory across executions. It is not required for most feeds. Many feeds can stay stateless and simply return a result when a block, transaction, or log matches the filter condition.
+
+## Use Cases
+
+- Store small lookup tables.
+- Track recently seen identifiers.
+- Keep compact feed state.
+- Share simple values across executions.
+
+## Filter Access
+
+Filters can use the `@atria/kv` module when KV access is enabled.
+
+```javascript
+const kv = require("@atria/kv");
+
+async function main(stream) {
+  const bucket = kv.bucket("seen-transfers");
+  await bucket.add(stream.metadata.blockNumber, true);
+  return null;
+}
+```
+
+## Bucket Operations
+
+Create a bucket handle with `kv.bucket(name)`, then call operations on that bucket.
+
+### Add Values
+
+```javascript
+await bucket.add("key", { value: 1 });
+await bucket.addMany([
+  { key: "a", value: { value: 1 } },
+  { key: "b", value: { value: 2 } }
+]);
+```
+
+- `add(key, value)`: stores one value by key.
+- `addMany(items)`: stores multiple key-value items in one call.
+
+### Read Values
+
+```javascript
+const item = await bucket.get("key");
+const items = await bucket.getMany(["a", "b"]);
+```
+
+- `get(key)`: returns one value, or `null` when no value exists.
+- `getMany(keys)`: returns multiple values for the provided keys.
+
+### Remove Values
+
+```javascript
+await bucket.remove("key");
+await bucket.removeMany(["a", "b"]);
+```
+
+- `remove(key)`: removes one key.
+- `removeMany(keys)`: removes multiple keys.
+
+### List Values
+
+```javascript
+const page = await bucket.list({
+  limit: 100,
+  cursor: ""
+});
+```
+
+- `list({ limit, cursor })`: returns a page of bucket values.
+- `limit` controls the maximum number of values returned.
+- `cursor` is used to continue from a previous page.
+
+## Use Carefully
+
+KV is best for compact workflow state and lookup data. It should not replace an analytical database, a warehouse, or a long-term event archive.
+
+If a workflow needs large joins, historical scans, or complex reporting, send feed results to a downstream data store through an output instead of trying to keep that state inside the feed runtime.

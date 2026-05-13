@@ -1,0 +1,30 @@
+---
+title: "Delivery Failures"
+description: "Troubleshoot failed output delivery."
+---
+
+# Delivery Failures
+
+Delivery failures happen when Atria cannot send a feed result to a configured output.
+
+## Common Causes
+
+- Webhook URL is unavailable.
+- Destination times out.
+- Destination rejects the request.
+- Required headers are missing or invalid.
+- Payload shape does not match the destination expectation.
+
+## System Behavior
+
+Atria retries failed delivery. By default, it retries after 30 seconds and allows up to 30 delivery attempts for the same result. If delivery still fails, Atria stops retrying that result and moves the feed to `Error` with a delivery failure reason.
+
+## What to Check
+
+- Confirm the webhook URL.
+- Check headers and authentication.
+- Check the logs of the service that receives the webhook.
+- Review recent feed results.
+- Test the feed on a known block that should produce the expected result.
+
+See [outputs](/atria/core-concepts/outputs) and [delivery architecture](/atria/architecture/delivery).

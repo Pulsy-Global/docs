@@ -1,0 +1,30 @@
+---
+title: "Cursors and Block Delay"
+description: "Learn how feeds track progress through blocks."
+---
+
+# Cursors and Block Delay
+
+Atria uses cursors and block delay to process chain data in order.
+
+These two concepts are central to running feeds reliably. The cursor answers “where should this feed continue from?” Block delay answers “how far behind the chain head should this feed process?”
+
+## Cursor
+
+The cursor records the next block a feed should process. When a running feed restarts, the runtime resumes from the saved cursor.
+
+## Start Block
+
+If a feed defines `startBlock`, Atria begins from that block. If no start block is provided, the feed begins from the current chain head.
+
+## End Block
+
+If a feed defines `endBlock`, processing completes once the feed reaches that block.
+
+## Block Delay
+
+Block delay tells the runtime to wait until the chain has advanced beyond the target block. This can reduce the chance of acting on data that may be affected by a reorg.
+
+Low block delay gives faster detection. Higher block delay gives the chain more time to settle. The right value depends on the network, the business impact of acting too early, and whether the downstream workflow can tolerate reorg-aware updates.
+
+For operational behavior, see [running feeds](/atria/operations/running-feeds).

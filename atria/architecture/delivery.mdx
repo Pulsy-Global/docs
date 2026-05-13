@@ -1,0 +1,34 @@
+---
+title: "Delivery"
+description: "See how Atria delivers matching feed results."
+---
+
+# Delivery
+
+The Delivery service picks up feed results and invokes the feed's configured outputs.
+
+## Delivery Flow
+
+```mermaid
+flowchart TB
+  Runtime[Runtime publishes feed result] --> Stream[Feed result stream]
+  Stream --> Delivery[Delivery service reads result]
+  Delivery --> Config[Load configured outputs]
+  Config --> Invoke[Invoke output]
+  Invoke --> Success{Output succeeds?}
+  Success -->|Yes| Ack[Acknowledge result]
+  Success -->|No| Retry[Retry delivery]
+  Retry --> Pause[Pause feed after repeated failures]
+```
+
+## Webhooks
+
+Webhook delivery is the supported output type available today. Each webhook output includes a URL, HTTP method, headers, and timeout settings. Headers can be used to pass authentication or other verification values your endpoint requires.
+
+## Retries
+
+The Delivery service retries failed webhook sends. If delivery keeps failing, it can request that the feed be paused.
+
+## Decoupling
+
+Delivery is decoupled from feed execution. This lets the Runtime publish matched results while the Delivery service invokes the configured outputs separately.

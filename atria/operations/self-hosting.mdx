@@ -1,0 +1,36 @@
+---
+title: "Self-Hosting"
+description: "Learn what it takes to run Atria yourself."
+---
+
+# Self-Hosting
+
+Self-hosting Atria means operating the services and infrastructure that power feed creation, ingestion, execution, and delivery.
+
+This model is best for teams that already run production infrastructure and want Atria close to their own systems, secrets, RPC endpoints, and monitoring stack.
+
+## What You Run
+
+- Dashboard and management backend for feed operations.
+- Ingestor for blockchain data collection.
+- Runtime for feed execution.
+- Delivery for webhooks.
+- PostgreSQL for metadata.
+- NATS for streams, KV, leases, and cursors.
+
+## Configuration Areas
+
+- Network RPC and WebSocket endpoints.
+- Runtime limits.
+- File storage for filter and function code.
+- Messaging connection settings.
+- Database connection settings.
+- Webhook output configuration.
+
+## Practical Advice
+
+Start with a small set of networks and feeds. Confirm ingestion, feed testing, runtime deployment, and webhook delivery before scaling to more chains or higher throughput.
+
+Treat RPC quality as part of the deployment. Atria can only ingest what the configured network providers can serve reliably. For production workflows, use endpoints with stable latency, sufficient rate limits, archive or trace capabilities when needed, and clear operational ownership.
+
+For networks, see [network configuration](/atria/operations/network-configuration).

@@ -1,0 +1,37 @@
+---
+title: "Network Configuration"
+description: "Configure the chains Atria should read from."
+---
+
+# Network Configuration
+
+Atria reads network configuration from deployment settings. Each network entry tells the Ingestor how to connect to an EVM-compatible chain.
+
+Network configuration is not just a chain list. It defines the data boundary for feeds: which chain can be read, which RPC transport is used, and whether advanced payloads such as traces are available.
+
+## Typical Fields
+
+- Network identifier, such as `ethereum-mainnet`.
+- Chain ID.
+- HTTP RPC endpoint.
+- WebSocket endpoint when available.
+- Feature flags such as trace support.
+- Reorg and cache behavior.
+
+## Cloud and Local Differences
+
+Atria Cloud supports a curated set of EVM networks. Self-managed deployments can add any EVM-compatible chain by supplying reliable RPC endpoints.
+
+For local or private deployments, start with one chain and verify that blocks, logs, and any required trace data are available before adding more networks. Different RPC providers expose different capabilities, especially for debug tracing.
+
+## Current Atria Cloud Networks
+
+- Ethereum
+- Arbitrum One
+- Optimism
+- Base
+- Polygon
+- BNB Chain
+- Avalanche C-Chain
+
+For payload selection, see [data types](/atria/core-concepts/data-types).

@@ -1,0 +1,24 @@
+---
+title: "Code Storage"
+description: "Learn where feed code lives in Atria."
+---
+
+# Code Storage
+
+Atria stores feed code separately from feed metadata.
+
+## What Is Stored
+
+- Filter JavaScript.
+- Optional function JavaScript.
+- File paths linked from feed records.
+
+## Storage Backends
+
+Deployments can use local file storage or object storage depending on configuration.
+
+## Why It Matters
+
+Keeping code in file storage allows feeds to keep metadata in PostgreSQL while loading executable code only when needed for testing or deployment.
+
+For how feed definitions point to code files, see [feed manifest](/atria/core-concepts/feed-manifest).

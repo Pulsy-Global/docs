@@ -1,0 +1,40 @@
+---
+title: "Deployment Options"
+description: "Choose the right way to run Atria."
+---
+
+# Deployment Options
+
+Atria is designed for several deployment models.
+
+The right deployment model depends on how much infrastructure your team wants to operate and how strict your data, security, or latency requirements are. The feed model stays the same across deployment types: a feed still reads blockchain data, runs logic, and triggers an output when the condition matches.
+
+## Pulsy Cloud
+
+Pulsy manages infrastructure, runtime operations, and product access. This is the simplest path for teams that want to build feeds without operating the backend.
+
+## Self-Managed
+
+Teams can run Atria in their own infrastructure using the open-source runtime and supporting services.
+
+## Private or On-Prem
+
+For teams with stricter operational requirements, Atria can be deployed into private infrastructure with tailored setup and support.
+
+## Self-Managed Dependencies
+
+In a self-managed deployment, your team deploys and manages the Atria services and the supporting infrastructure they depend on:
+
+- Atria Dashboard and management backend.
+- Ingestor.
+- Runtime.
+- Delivery service.
+- PostgreSQL for Atria metadata.
+- NATS for streams, KV storage, leases, cursors, and block data.
+- Fission-based function runtime when feeds use post-filter functions.
+
+See [self-hosting](/atria/operations/self-hosting).
+
+## Choosing a Model
+
+Use Pulsy Cloud when speed and low operational overhead matter most. Use self-managed or private deployments when your team needs direct control over infrastructure, network access, security boundaries, or custom runtime behavior.
