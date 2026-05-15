@@ -1,0 +1,83 @@
+---
+title: "Create an Output"
+description: "Create a reusable action connector for Atria feeds."
+---
+
+# Create an Output
+
+Outputs are reusable connectors that let feeds trigger actions outside Atria. A webhook output can call an internal service, automation endpoint, alerting workflow, or integration layer when a feed matches the on-chain event you care about.
+
+Webhook is the currently supported output type in the dashboard. Additional connector types are on the roadmap.
+
+Create an output before creating a feed if you already know what should happen when a feed matches. You can also create feeds first and attach outputs later.
+
+## Use the AI Assistant
+
+Give the AI assistant the output name, webhook URL, request method, timeout, and any headers, and it will create the output.
+
+Example prompt:
+
+```text
+Create a new webhook output named "New Output".
+Use "https://webhook.site/01c55a61-f7a3-490e-a7ba-3ed15b355dff" as webhook.
+Send requests with "POST".
+Set the timeout to 30 seconds.
+Add an "X-API-KEY" header with "e796a340-47b4-4591-b3de-7f04e3958023".
+```
+
+![AI assistant creating an output](/images/atria/dashboard/ai-create-output.png)
+
+Once the assistant creates the output, it appears on the **Outputs** page.
+
+![AI-created output in the Outputs table](/images/atria/dashboard/ai-output-created-table.png)
+
+After the AI assistant creates the output, review it before assigning it to a feed. Make sure the name, type, endpoint, method, timeout, and headers match the output you want to use.
+
+## Create an Output Manually
+
+Use the manual flow when you want to configure each field yourself.
+
+### Open the Output Form
+
+1. Go to **Outputs**.
+2. Select **Add Output**.
+
+![Outputs page with Add Output highlighted](/images/atria/dashboard/outputs-add-output.png)
+
+### Enter Basic Information
+
+In **Basic Information**:
+
+1. Enter an **Output Name**.
+2. Set **Output Type** to **Webhook**.
+3. Add an optional **Description** that explains the action or integration this output represents.
+4. Add or create tags to organize outputs in the way your team works, for example by project, protocol, environment, workflow, or owner.
+
+![Create Output page with basic information filled in](/images/atria/dashboard/output-basic-information.png)
+
+### Configure the Webhook
+
+In **Webhook Configuration**:
+
+1. Enter the **Webhook URL**.
+2. Choose the **HTTP Method**.
+3. Set the **Timeout** in seconds.
+4. Add HTTP headers if your endpoint requires authentication or custom metadata.
+
+Use a stable endpoint that can safely handle repeated calls. Atria may retry a webhook when the connected system is temporarily unavailable, so the receiving service should be idempotent for the action it performs.
+
+![Webhook configuration with URL, method, timeout, and headers](/images/atria/dashboard/webhook-configuration.png)
+
+### Save the Output
+
+Select **Create Output**. After the output is created, it appears on the **Outputs** page and can be selected from the **Output** tab in a feed workspace.
+
+The same output can be reused by multiple feeds. For example, several risk-monitoring feeds can call the same incident workflow, or several protocol feeds can call the same operations service.
+
+![Saved output in the Outputs table](/images/atria/dashboard/output-created-table.png)
+
+## Next Step
+
+Create a feed and attach this output from the feed workspace so matching on-chain events can trigger the action.
+
+Continue with [Create, Test, and Deploy a Feed](/atria/dashboard/create-test-and-deploy-a-feed).

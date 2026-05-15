@@ -1,0 +1,38 @@
+---
+title: "Manage Feeds"
+description: "Review status, pause, resume, edit, and delete feeds from the dashboard."
+---
+
+# Manage Feeds
+
+Use the **Feeds** page to operate feeds after they have been created.
+
+## Read Feed Status
+
+The **Status** column shows the feed state. When live stream data is available, the status also shows whether the feed is in sync or behind the chain head.
+
+![Running feed status showing sync or block lag](/images/atria/dashboard/feed-running-status.png)
+
+## Pause or Resume a Feed
+
+Use the toggle in the feed row.
+
+- If the feed is **Running**, the toggle pauses it.
+- If the feed is **Paused**, the toggle resumes it.
+- The toggle is disabled when the feed is not in an active state that can be paused or resumed.
+
+![Pause and resume toggle on a feed row](/images/atria/dashboard/feed-pause-resume-toggle.png)
+
+## Edit a Feed
+
+Select the edit action in the feed row to open the feed workspace.
+
+From there you can change settings, filter logic, outputs, and tags. After a change, run the test flow again before deploying the updated feed.
+
+![Feed row edit action](/images/atria/dashboard/feed-edit-action.png)
+
+## Delete a Feed
+
+Select the delete action in the feed row. Deletion cannot be undone.
+
+![Delete feed confirmation modal](/images/atria/dashboard/feed-delete.png)

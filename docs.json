@@ -22,6 +22,14 @@
             ]
           },
           {
+            "group": "Dashboard Quick Start",
+            "pages": [
+              "atria/dashboard/create-an-output",
+              "atria/dashboard/create-test-and-deploy-a-feed",
+              "atria/dashboard/manage-feeds"
+            ]
+          },
+          {
             "group": "Core Concepts",
             "pages": [
               "atria/core-concepts/what-is-a-feed",

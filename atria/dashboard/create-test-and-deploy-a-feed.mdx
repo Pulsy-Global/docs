@@ -1,0 +1,145 @@
+---
+title: "Create, Test, and Deploy a Feed"
+description: "Build a feed, test it against a block, and deploy it."
+---
+
+# Create, Test, and Deploy a Feed
+
+A feed listens to the blockchain data you define, decides what matters, and emits a structured payload when the feed logic matches. In the dashboard, you can create a feed with the AI assistant or configure each part manually.
+
+## Use the AI Assistant
+
+Give the AI assistant the feed name, source, stream behavior, filter logic, outputs, and test block, and it will create the feed.
+
+Example prompt:
+
+```text
+Create a feed named "Large Transfer Monitor".
+Use Ethereum Mainnet with the "Block With Logs" dataset.
+Run continuously from the latest block with no block delay.
+Filter for ERC-20 Transfer events above 100,000 tokens.
+Attach the "New Output" webhook output.
+Test it on block 19876543.
+```
+
+![AI assistant creating a feed](/images/atria/dashboard/ai-create-feed.png)
+
+After the AI assistant creates the feed, review the settings, filter, output, and test result before connecting it to your systems.
+
+![AI-created feed in the feed workspace](/images/atria/dashboard/ai-feed-workspace.png)
+
+## Create a Feed Manually
+
+Use the manual flow when you want to configure each part yourself.
+
+### Create a Feed
+
+1. Go to **Feeds**.
+2. Select **Add Feed**.
+
+![Feeds page with Add Feed highlighted](/images/atria/dashboard/feeds-add-feed.png)
+
+The dashboard opens a mode selection screen. Select **Advanced Mode** to create the feed manually.
+
+![Feed mode selection with Advanced Mode highlighted](/images/atria/dashboard/feed-mode-advanced.png)
+
+After you select **Advanced Mode**, the dashboard opens a new feed workspace with the **Settings** tab selected.
+
+### Configure Settings
+
+In **Settings**, review the **Basics** section:
+
+1. Keep the generated **Feed Name** or enter your own.
+2. Set **Version** using semantic versioning, such as `1.0.0`.
+3. Add an optional **Description**.
+4. Add tags to organize the feed in the way your team works, for example by use case, chain, protocol, or owner.
+
+![Feed Settings tab with feed name, version, description, and tags](/images/atria/dashboard/feed-settings.png)
+
+### Choose the Source
+
+In **Configuration**, select the pencil icon on **Source**.
+
+1. Choose a **Network**.
+2. Choose an **Environment**.
+3. Choose a **Dataset**.
+4. Select **Done**.
+
+![Source dialog with network, environment, and dataset fields](/images/atria/dashboard/feed-source-dialog.png)
+
+### Configure the Stream
+
+Select the pencil icon on **Stream**.
+
+1. Choose whether the feed should start from the **Latest block** or a **Specific block**.
+2. Choose whether the feed should **Run continuously** or stop at a **Specific block**.
+3. Choose **Realtime** for no block delay, or **Custom** to wait for a number of confirmations.
+4. Select **Done**.
+
+Use custom block ranges when you want the feed to process a defined section of chain history instead of running only from the latest block onward.
+
+![Stream dialog with block range and block delay options](/images/atria/dashboard/feed-stream-dialog.png)
+
+### Set Error Handling
+
+In **Error Handling**, choose the strategy for runtime errors. The default flow is to continue on error when possible so one bad event does not stop the whole feed.
+
+![Error Handling selector](/images/atria/dashboard/feed-error-handling.png)
+
+### Add Filter Logic
+
+Select **Filter** in the workspace navigation. The dashboard opens a code editor and inserts a starter template based on the selected dataset.
+
+The filter must define `main(stream)`. Return:
+
+- A JSON-safe object when the feed should emit a result.
+- `null` when the feed should skip the current block or event.
+
+You can also upload a `.js` or `.ts` file from the upload button in the editor header.
+
+![Filter tab with the code editor](/images/atria/dashboard/feed-filter-editor.png)
+
+### Attach Outputs
+
+Select **Output** in the workspace navigation.
+
+1. Use **Add Output** to select one or more existing outputs.
+2. Select an output badge to review its read-only configuration.
+3. Remove an output with the close icon if it should not receive feed results.
+
+If you only want to test logic first, you can leave outputs empty and attach them later.
+
+![Output tab with a selected output](/images/atria/dashboard/feed-output-tab.png)
+
+### Test the Feed
+
+Open **Test Console** at the bottom of the workspace.
+
+1. Enter a **Block Number**, or use the refresh icon to load the latest block for the selected environment.
+2. Enable **Execute Outputs** only when you want the test run to call attached outputs.
+3. Select **Test Feed**.
+4. Review the console output.
+
+If the filter and optional function return no errors, the console shows **Passed** and the primary action changes from **Test Feed** to **Deploy**.
+
+![Test Console with a passed feed test](/images/atria/dashboard/feed-test-console.png)
+
+### Deploy and Start
+
+Select **Deploy**.
+
+For a new feed, the dashboard creates the feed and then starts it. For an existing feed, the dashboard updates the feed and then starts it.
+
+![Deployed feed workspace after the success notification](/images/atria/dashboard/feed-deployed-success.png)
+
+### Review Live Results
+
+For an existing deployed feed, open **Live Preview** to watch real-time results. Results appear with block number, timestamp, size, and JSON data.
+
+![Live Preview with a selected result](/images/atria/dashboard/feed-live-preview.png)
+
+### Review Deploy History
+
+For an existing feed, open **Deploy History** to review deployment status, version, creation time, and update time.
+
+![Deploy History tab](/images/atria/dashboard/feed-deploy-history.png)
