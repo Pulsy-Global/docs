@@ -1,6 +1,6 @@
 # Pulsy Documentation
 
-Pulsy is the complete suite for tracking on-chain events. Pulsy brings together event-driven workflows, cross-chain intelligence, and historical backfills, giving teams a foundation to turn on-chain events into actions for monitoring, automation, and decision making.
+Pulsy is the complete suite for tracking on-chain events. Pulsy brings together event-driven workflows and cross-chain intelligence, giving teams a foundation to turn on-chain events into actions for monitoring, automation, and decision making.
 
 ## Pulsy Product Suite
 
@@ -25,16 +25,6 @@ XFlow provides cross-chain intelligence to analyze liquidity flows and bridge ac
 - Use coverage across 70+ integrated bridges.
 
 Read more at [pulsy.app/xflow](https://pulsy.app/xflow).
-
-### W12
-
-W12 is Pulsy's historical backfill engine for deep on-chain analysis.
-
-- Run historical analysis in hours, not weeks.
-- Replay feeds from any block height.
-- Backfill large datasets efficiently.
-
-Read more at [pulsy.app/w12](https://pulsy.app/w12).
 
 ## Documentation Areas
 
