@@ -41,7 +41,14 @@
             "name": "Filter",
             "in": "query",
             "schema": {
-              "$ref": "#/components/schemas/DateRangeFilter"
+              "enum": [
+                "Withdrawn",
+                "Deposited",
+                "Completed",
+                "Updated"
+              ],
+              "type": "string",
+              "default": "Withdrawn"
             }
           }
         ],
@@ -67,7 +74,7 @@
             }
           },
           "200": {
-            "description": "OK",
+            "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
@@ -120,38 +127,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "text/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -161,38 +147,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               },
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               },
               "text/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               }
             }
@@ -240,7 +205,7 @@
             }
           },
           "200": {
-            "description": "OK",
+            "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
@@ -293,38 +258,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "text/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -334,38 +278,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               },
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               },
               "text/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               }
             }
@@ -402,7 +325,7 @@
             }
           },
           "200": {
-            "description": "OK",
+            "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
@@ -455,38 +378,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "text/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -496,38 +398,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               },
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               },
               "text/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               }
             }
@@ -595,7 +476,7 @@
             }
           },
           "200": {
-            "description": "OK",
+            "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
@@ -639,38 +520,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "text/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -680,38 +540,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               },
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               },
               "text/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               }
             }
@@ -758,7 +597,7 @@
             }
           },
           "200": {
-            "description": "OK",
+            "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
@@ -811,38 +650,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "text/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -852,38 +670,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               },
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               },
               "text/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DefaultProblemDetails"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DefaultProblemDetails"
                 }
               }
             }
@@ -949,7 +746,13 @@
             "format": "double"
           },
           "status": {
-            "$ref": "#/components/schemas/BridgeStatus"
+            "enum": [
+              "Operational",
+              "Warning",
+              "Malfunction"
+            ],
+            "type": "string",
+            "description": "Current bridge status in XFlow.\r\n`Operational` Transfers were captured from this bridge in the last 24 hours;\r\n`Warning` No transfers were captured from this bridge in the last 24 hours;\r\n`Malfunction` No transfers were captured from this bridge in the last 7 days."
           },
           "delisted": {
             "type": "boolean",
@@ -959,26 +762,13 @@
         "additionalProperties": false,
         "description": "Bridge metadata exposed through the external API."
       },
-      "BridgeStatus": {
-        "enum": [
-          "Operational",
-          "Warning",
-          "Malfunction"
-        ],
-        "type": "string"
-      },
-      "DateRangeFilter": {
-        "enum": [
-          "Withdrawn",
-          "Deposited",
-          "Completed",
-          "Updated"
-        ],
-        "type": "string"
-      },
       "DefaultProblemDetails": {
         "type": "object",
         "properties": {
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
           "type": {
             "type": "string",
             "nullable": true
@@ -997,10 +787,6 @@
             "nullable": true
           },
           "instance": {
-            "type": "string",
-            "nullable": true
-          },
-          "errorCode": {
             "type": "string",
             "nullable": true
           }
@@ -1010,24 +796,7 @@
       "DefaultValidationProblemDetails": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "detail": {
-            "type": "string",
-            "nullable": true
-          },
-          "instance": {
+          "errorCode": {
             "type": "string",
             "nullable": true
           },
@@ -1041,44 +810,29 @@
             },
             "nullable": true
           },
-          "errorCode": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
             "type": "string",
             "nullable": true
           }
         },
         "additionalProperties": { }
-      },
-      "HttpValidationProblemDetails": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ProblemDetails"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "errors": {
-                "type": "object",
-                "additionalProperties": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "nullable": true
-              }
-            },
-            "additionalProperties": { }
-          }
-        ]
-      },
-      "InOutDollarStatus": {
-        "enum": [
-          "Unprocessed",
-          "NotFound",
-          "MismatchDetected",
-          "OK"
-        ],
-        "type": "string"
       },
       "ProblemDetails": {
         "type": "object",
@@ -1353,7 +1107,14 @@
             "nullable": true
           },
           "usdMismatchStatus": {
-            "$ref": "#/components/schemas/InOutDollarStatus"
+            "enum": [
+              "Unprocessed",
+              "NotFound",
+              "MismatchDetected",
+              "OK"
+            ],
+            "type": "string",
+            "description": "Indicates whether deposited and withdrawn USD amounts are within an acceptable range:\r\n`Unprocessed` (amounts not processed yet);\r\n`NotFound` (USD rates were unavailable);\r\n`MismatchDetected` (difference between deposited and withdrawn USD is unusually high);\r\n`OK` (difference is within the acceptable range)."
           },
           "tags": {
             "type": "array",
@@ -1366,25 +1127,17 @@
         },
         "additionalProperties": false
       },
-      "UnconfirmedProblemDetails": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/DefaultProblemDetails"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "isUnconfirmed": {
-                "type": "boolean"
-              }
-            },
-            "additionalProperties": { }
-          }
-        ]
-      },
       "UnexpectedProblemDetails": {
         "type": "object",
         "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "traceId": {
+            "type": "string",
+            "nullable": true
+          },
           "type": {
             "type": "string",
             "nullable": true
@@ -1403,14 +1156,6 @@
             "nullable": true
           },
           "instance": {
-            "type": "string",
-            "nullable": true
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "traceId": {
             "type": "string",
             "nullable": true
           }
