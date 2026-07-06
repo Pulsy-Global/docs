@@ -756,7 +756,7 @@
           },
           "delisted": {
             "type": "boolean",
-            "description": "Indication flag of delisted bridge. If set to true bridge is in the system but no longer operational throughout blockchains."
+            "description": "Whether the bridge has been delisted from active maintenance due to inactivity. Historical data is retained."
           }
         },
         "additionalProperties": false,
