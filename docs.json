@@ -111,6 +111,13 @@
               "xflow/api-reference/endpoints/get_chains",
               "xflow/api-reference/endpoints/get_tokens"
             ]
+          },
+          {
+            "group": "Changelog",
+            "pages": [
+              "xflow/changelog/overview",
+              "xflow/changelog/1-24-0"
+            ]
           }
         ]
       }

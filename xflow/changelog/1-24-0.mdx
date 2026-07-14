@@ -1,0 +1,51 @@
+---
+title: "XFlow 1.24.0"
+description: "Solana coverage for four more bridges, a public explorer, and a delisted flag on the bridges endpoint."
+---
+
+**Released July 13, 2026**
+
+This release adds Solana coverage for four more bridges, opens the XFlow explorer to the public, and adds a `delisted` flag to the external bridges endpoint so you can tell active bridges from retired ones.
+
+## Expanded coverage
+
+Four more bridges now track transfers to and from Solana:
+
+- [Sushi Swap](https://www.sushi.com/ethereum/cross-chain-swap)
+- [WAN Bridge](https://bridge.wanchain.org)
+- [1inch Fusion](https://app.1inch.io)
+- [Bungee](https://www.bungee.exchange)
+
+The full list of tracked bridges lives on the [Supported Bridges](/xflow/supported-bridges/overview) page and on the [XFlow home page](https://xflow.pulsy.app).
+
+## Explorer
+
+The most recent 3 months of cross-chain transfers are now publicly available in the [XFlow explorer](https://xflow.pulsy.app). You no longer need an account to search and filter recent transfers.
+
+Fixes in this release:
+
+- Integrator filtering on the Analytics page no longer returns unrelated base protocol matches.
+- Fixed a layout overflow on small screens.
+- Fixed the arrow icon on the Top 10 Pairs panel.
+- Fixed visibility of the Create Account button.
+
+## Data accuracy
+
+Improved tracking for [ThorSwap](https://app.thorswap.finance/swap), [LiFi Protocol](https://li.fi), [Mayan](https://swap.mayan.finance), [Bridgers](https://bridgers.xyz), [Pheasant](https://pheasant.network), [Relay](https://relay.link/bridge), and [AllBridge Core](https://core.allbridge.io) as part of our ongoing data accuracy refinement.
+
+## Bridge delistings
+
+The following bridges were delisted from active maintenance due to lack of on-chain activity:
+
+- [Everclear](https://www.everclear.org)
+- [zk Bridge](https://www.zkbridge.com/token)
+- [Messina](https://messina.one/bridge)
+- [Crowd Swap](https://app.crowdswap.org/exchange)
+
+Historical data for these bridges remains available. You can still query their past transfers through the explorer and the API.
+
+## API changes
+
+The [Get Supported Bridges](/xflow/api-reference/endpoints/get_bridges) endpoint now returns a `delisted` flag on each bridge. It indicates whether the bridge has been delisted from active maintenance due to inactivity.
+
+Delisted bridges stay in the response so historical lookups keep working.
