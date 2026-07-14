@@ -7,6 +7,19 @@ description: "Solana coverage for four more bridges, a public explorer, and a de
 
 This release adds Solana coverage for four more bridges, opens the XFlow explorer to the public, and adds a `delisted` flag to the external bridges endpoint so you can tell active bridges from retired ones.
 
+## Explorer
+
+The most recent 3 months of cross-chain transfers are now publicly available in the [XFlow explorer](https://xflow.pulsy.app). You no longer need an account to search and filter recent transfers.
+
+<video autoPlay muted loop playsInline className="w-full rounded-lg" src="/images/xflow/changelog/1-24-0-public-explorer.mp4" />
+
+Fixes in this release:
+
+- Integrator filtering on the Analytics page no longer returns unrelated base protocol matches.
+- Fixed a layout overflow on small screens.
+- Fixed the arrow icon on the Top 10 Pairs panel.
+- Fixed visibility of the Create Account button.
+
 ## Expanded coverage
 
 Four more bridges now track transfers to and from Solana:
@@ -17,17 +30,6 @@ Four more bridges now track transfers to and from Solana:
 - [Bungee](https://www.bungee.exchange)
 
 The full list of tracked bridges lives on the [Supported Bridges](/xflow/supported-bridges/overview) page and on the [XFlow home page](https://xflow.pulsy.app).
-
-## Explorer
-
-The most recent 3 months of cross-chain transfers are now publicly available in the [XFlow explorer](https://xflow.pulsy.app). You no longer need an account to search and filter recent transfers.
-
-Fixes in this release:
-
-- Integrator filtering on the Analytics page no longer returns unrelated base protocol matches.
-- Fixed a layout overflow on small screens.
-- Fixed the arrow icon on the Top 10 Pairs panel.
-- Fixed visibility of the Create Account button.
 
 ## Data accuracy
 
