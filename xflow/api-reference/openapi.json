@@ -691,6 +691,57 @@
   },
   "components": {
     "schemas": {
+      "BalanceChangeExported": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "type": "string",
+            "description": "Account address whose balance changed.",
+            "nullable": true
+          },
+          "chain": {
+            "type": "string",
+            "description": "Blockchain on which the balance change occurred.",
+            "nullable": true
+          },
+          "token": {
+            "type": "string",
+            "description": "Token symbol of the asset whose balance changed. Can be null when token data is unavailable.",
+            "nullable": true
+          },
+          "tokenContract": {
+            "type": "string",
+            "description": "Token contract address. Can be null when the asset is the chain's native token.",
+            "nullable": true
+          },
+          "decimals": {
+            "type": "integer",
+            "description": "Token decimals used to convert rawAmount. Can be null when token data is unavailable.",
+            "format": "int32",
+            "nullable": true
+          },
+          "rawAmount": {
+            "type": "string",
+            "description": "Absolute balance change in the token's smallest unit."
+          },
+          "direction": {
+            "enum": [
+              "SENT",
+              "RECEIVED"
+            ],
+            "type": "string",
+            "description": "Direction of the net change:\r\n`SENT` funds left the account;\r\n`RECEIVED` funds arrived in the account."
+          },
+          "amount": {
+            "type": "number",
+            "description": "Formatted absolute amount of the balance change. The sign is carried by direction. Can be null when token data is unavailable.",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Net token balance change of an account exposed through the external API."
+      },
       "BridgeDto": {
         "type": "object",
         "properties": {
@@ -1122,6 +1173,14 @@
               "$ref": "#/components/schemas/TagDto"
             },
             "description": "Optional field returning extra information for certain swaps. Currently defined tags:\r\n`thor-affiliate` for swaps through Thorswap;\r\n`nft` to indicate whether the transaction is an NFT deposit or withdrawal (`nft`: `deposit` or `nft`: `withdrawal`);\r\n`injective-nonce` for swaps through the Injective bridge to the Injective chain.",
+            "nullable": true
+          },
+          "balanceChanges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceChangeExported"
+            },
+            "description": "Net token balance changes for every account that moved value in this swap. Each entry carries the account, chain, and token with the absolute amount in the token's smallest unit and the direction of the change.",
             "nullable": true
           }
         },
