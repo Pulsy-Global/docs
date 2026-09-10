@@ -939,9 +939,8 @@
             "nullable": true
           },
           "amount": {
-            "type": "number",
-            "description": "Formatted absolute amount of the balance change. The sign is carried by\r\n`direction`. `null` when token decimals are unavailable.",
-            "format": "double",
+            "type": "string",
+            "description": "Formatted absolute amount of the balance change as an exact decimal string, e.g. `0.5`.\r\nThe sign is carried by `direction`. `null` when token decimals are unavailable.",
             "nullable": true
           }
         },
@@ -1063,7 +1062,7 @@
             "nullable": true
           }
         },
-        "additionalProperties": {}
+        "additionalProperties": { }
       },
       "DefaultValidationProblemDetails": {
         "type": "object",
@@ -1104,7 +1103,7 @@
             "nullable": true
           }
         },
-        "additionalProperties": {}
+        "additionalProperties": { }
       },
       "HttpValidationProblemDetails": {
         "allOf": [
@@ -1125,7 +1124,7 @@
                 "nullable": true
               }
             },
-            "additionalProperties": {}
+            "additionalProperties": { }
           }
         ]
       },
@@ -1163,7 +1162,7 @@
             "nullable": true
           }
         },
-        "additionalProperties": {}
+        "additionalProperties": { }
       },
       "SupportedChainExported": {
         "type": "object",
@@ -1449,7 +1448,7 @@
                 "type": "boolean"
               }
             },
-            "additionalProperties": {}
+            "additionalProperties": { }
           }
         ]
       },
@@ -1486,7 +1485,7 @@
             "nullable": true
           }
         },
-        "additionalProperties": {}
+        "additionalProperties": { }
       }
     },
     "securitySchemes": {
@@ -1505,10 +1504,10 @@
   },
   "security": [
     {
-      "Basic": []
+      "Basic": [ ]
     },
     {
-      "Bearer": []
+      "Bearer": [ ]
     }
   ]
 }
