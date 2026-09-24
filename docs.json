@@ -124,6 +124,7 @@
             "group": "Changelog",
             "pages": [
               "xflow/changelog/overview",
+              "xflow/changelog/1-27-0",
               "xflow/changelog/1-25-0",
               "xflow/changelog/1-24-0"
             ]

@@ -1,0 +1,66 @@
+---
+title: "XFlow 1.27.0"
+description: "HiFi Swap tracking, search preferences in the explorer, and balance change amounts as exact decimal strings."
+---
+
+**Released September 24, 2026**
+
+This release adds HiFi Swap to the tracked bridges, gives the explorer a place to control how wide a search runs, and changes the type of the `amount` field on a balance change.
+
+## Expanded coverage
+
+- [HiFi Swap](https://hifiswap.io) is now tracked.
+
+The full list of tracked bridges lives on the [Supported Bridges](/xflow/supported-bridges/overview) page and on the [XFlow home page](https://xflow.pulsy.app).
+
+## Explorer
+
+Search preferences let you control how wide an address or hash search runs. Open them from the search box in the [XFlow explorer](https://xflow.pulsy.app).
+
+- Balance change accounts. An address search also matches any account that moved value inside a transfer, not only the sending and the receiving account.
+- Auxiliary transaction hashes. A hash search also matches transactions from the middle of a route.
+
+Both are on by default, and each can be turned off on its own.
+
+![The Search Preferences modal in the XFlow explorer, with both search options switched on.](/images/xflow/changelog/1-27-0-search-preferences.png)
+
+On a transfer page, hovering an account now highlights that same account everywhere else it appears on the page. It makes it easy to follow one account through the route and the balance changes.
+
+![The balance changes on a transfer page, with one account hovered and the same account lit up in the other row it appears in.](/images/xflow/changelog/1-27-0-account-highlight.png)
+
+## API changes
+
+The `amount` field inside each `balanceChanges` entry is now a string instead of a number. This is a breaking change for anything that reads that field.
+
+- It was `"amount": 0.5`. It is now `"amount": "0.5"`.
+- The value is the formatted absolute amount as an exact decimal string. The sign is still carried by `direction`.
+- It is `null` when the token decimals are unavailable, as before.
+- Everything else on a balance change entry is unchanged.
+
+The reason for the change is precision. A JSON number cannot hold every token amount exactly, so amounts with many decimals could come back slightly off.
+
+Very large token amounts are also decoded and returned exactly now, in both `rawAmount` and `amount`.
+
+The full shape of a balance change is in the [API reference](/xflow/api-reference).
+
+## Backfilling
+
+OmniBridge transfers can now be filled in for past dates. Historical coverage is confirmed for these bridges:
+
+- [OmniBridge](https://app.omnibridge.pro)
+- [LiFi Protocol](https://li.fi)
+- [Mayan](https://swap.mayan.finance)
+- [Symbiosis](https://app.symbiosis.finance)
+- [WAN Bridge](https://bridge.wanchain.org)
+
+## Data accuracy
+
+Improved tracking for these bridges, as part of our ongoing data accuracy refinement:
+
+- [Chainflip](https://swap.chainflip.io)
+- [Axelar](https://www.axelar.network)
+- [Threshold](https://dashboard.threshold.network/tBTC/mint)
+- [Celer](https://cbridge.celer.network)
+- [Bitget Wallet](https://web3.bitget.com/en/swap)
+- [Polygon PoS](https://portal.polygon.technology/bridge)
+- [Relay](https://relay.link/bridge)
