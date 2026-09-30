@@ -1422,7 +1422,7 @@
             "items": {
               "$ref": "#/components/schemas/TagDto"
             },
-            "description": "Optional field returning extra information for certain swaps. Currently defined tags:\r\n`thor-affiliate` for swaps through Thorswap;\r\n`nft` to indicate whether the transaction is an NFT deposit or withdrawal (`nft`: `deposit` or `nft`: `withdrawal`);\r\n`injective-nonce` for swaps through the Injective bridge to the Injective chain.",
+            "description": "Optional field returning extra information for certain swaps. Currently, defined tags:\r\n`thor-affiliate` for swaps through Thorswap;\r\n`partial-execution` for swaps that executed partially (`partial-execution`: `refund` for swaps with asset refund or `partial-execution`: `split` for swaps with splitted output);\r\n`nft` to indicate whether the transaction is an NFT deposit or withdrawal (`nft`: `deposit` or `nft`: `withdrawal`);\r\n`injective-nonce` for swaps through the Injective bridge to the Injective chain.",
             "nullable": true
           },
           "balanceChanges": {
