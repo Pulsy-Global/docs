@@ -40,5 +40,6 @@ Step-by-step logic:
 1. If either `depositUsdAmount` or `withdrawnUsdAmount` is `null`, status = `NotFound`.
 2. If exactly one of the USD amounts is `0`, status = `MismatchDetected`. If both are `0`, status = `OK`.
 3. Compute `diff = abs(depositUsdAmount - withdrawnUsdAmount)`. Mismatch is detected when `diff >= 100` and the relative difference is at least 10%.
+4. If tag either `nft` or `partial-execution`, status = `OK`.
 
 If none of the mismatch conditions are met, status = `OK`.
