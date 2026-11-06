@@ -1,0 +1,59 @@
+---
+title: "XFlow 1.28.0"
+description: "Hyperliquid, Hyper Unit, Skip, USDT0 and Near Intents tracking, a new bridge addresses endpoint, and partial execution tags for THORChain and Chainflip."
+---
+
+**Released November 5, 2026**
+
+This release adds five bridges and the Near chain to the tracked coverage, adds an endpoint that lists the bridge contract addresses behind tracked transfers, and tags THORChain and Chainflip transfers that only partly completed.
+
+<video autoPlay muted loop playsInline className="w-full rounded-lg" src="/images/xflow/changelog/1-28-0-integrations.mp4" />
+
+## Expanded coverage
+
+- Near is now a supported chain, with [Near Intents](https://near-intents.org) tracked to and from Near.
+- [Hyperliquid](https://hyperliquid.xyz) is now tracked.
+- [Hyper Unit](https://hyperunit.xyz) is now tracked.
+- [Skip](https://go.skip.build) is now tracked.
+- [USDT0](https://usdt0.to) is now tracked.
+- [Bitget Wallet](https://web3.bitget.com/en/swap) is tracked to and from Solana again.
+
+The full list of tracked bridges lives on the [Supported Bridges](/xflow/supported-bridges/overview) page and on the [XFlow home page](https://xflow.pulsy.app).
+
+## API changes
+
+A new endpoint lists the bridge contract addresses behind the transfers we track. For each address it shows:
+
+- The chain.
+- The direction.
+- When it was first seen and when it was last seen.
+- How many transfers went through it.
+- How much volume went through it.
+
+The full shape is on the [Get Bridge Addresses](/xflow/api-reference/endpoints/get_bridge_addresses) page.
+
+THORChain and Chainflip transfers that only partly completed now carry a `partial-execution` tag. Its value says what happened:
+
+- `refund`: part of the funds was sent back. THORChain and Chainflip.
+- `split`: the output arrived in more than one part. THORChain only.
+
+Their `usdMismatchStatus` is now `OK` instead of `MismatchDetected`. How the status is worked out is on the [USD Mismatches](/xflow/getting-started/in-out-usd-mismatch) page.
+
+## Data accuracy
+
+Improved tracking for these bridges, as part of our ongoing data accuracy refinement:
+
+- [Relay](https://relay.link/bridge)
+- [OmniBridge](https://app.omnibridge.pro)
+- [Wormhole](https://www.portalbridge.com/#/transfer)
+- [LayerZero](https://layerzero.network)
+- [Bridgers](https://bridgers.xyz)
+- [LiFi Protocol](https://li.fi)
+- [Transit Swap](https://swap.transit.finance)
+- [CCTP](https://www.circle.com/en/cross-chain-transfer-protocol)
+
+## Bridge delistings
+
+The following bridge was delisted from active maintenance. Historical data remains available.
+
+- [Router Protocol](https://routerprotocol.com)
