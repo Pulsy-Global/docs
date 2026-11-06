@@ -895,10 +895,228 @@
           }
         }
       }
+    },
+    "/v1/external/bridges/addresses": {
+      "get": {
+        "tags": [
+          "External"
+        ],
+        "description": "Returns bridge addresses whose on-chain contracts XFlow tracks across supported chains.",
+        "operationId": "GetBridgeAddresses",
+        "parameters": [
+          {
+            "name": "BridgeKeys",
+            "in": "query",
+            "description": "Bridge key(s). Default is every bridge. Maximum 5 bridges allowed simultaneously.",
+            "schema": {
+              "maxItems": 5,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Chains",
+            "in": "query",
+            "description": "Chain key(s). Default is every chain. Maximum 5 chains allowed simultaneously.",
+            "schema": {
+              "maxItems": 5,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Take",
+            "in": "query",
+            "description": "Number of swaps received per request. Default is 100. Should be in [10..100].",
+            "schema": {
+              "maximum": 100,
+              "minimum": 10,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Cursor",
+            "in": "query",
+            "description": "Cursor for pagination.",
+            "schema": {
+              "maxLength": 1000,
+              "type": "string"
+            }
+          },
+          {
+            "name": "Direction",
+            "in": "query",
+            "description": "Direction for pagination. Default is Next.",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/PaginationDirection"
+                }
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CursorPageOfBridgeAddressExported"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CursorPageOfBridgeAddressExported"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CursorPageOfBridgeAddressExported"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ProblemDetails"
+                    },
+                    {
+                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                    }
+                  ]
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ProblemDetails"
+                    },
+                    {
+                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                    }
+                  ]
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ProblemDetails"
+                    },
+                    {
+                      "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DefaultProblemDetails"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
+                    }
+                  ]
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DefaultProblemDetails"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
+                    }
+                  ]
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DefaultProblemDetails"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UnconfirmedProblemDetails"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AddressDirection": {
+        "enum": [
+          "From",
+          "To"
+        ],
+        "type": "string"
+      },
       "BalanceChangeExported": {
         "type": "object",
         "properties": {
@@ -945,6 +1163,56 @@
           }
         },
         "additionalProperties": false
+      },
+      "BridgeAddressExported": {
+        "type": "object",
+        "properties": {
+          "bridgeKey": {
+            "type": "string",
+            "description": "Bridge key.",
+            "nullable": true
+          },
+          "chain": {
+            "type": "string",
+            "description": "Blockchain key.",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "description": "Bridge address.",
+            "nullable": true
+          },
+          "direction": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AddressDirection"
+              }
+            ],
+            "description": "Address direction. Can be From or To."
+          },
+          "firstSeen": {
+            "type": "string",
+            "description": "The earliest timestamp when the address was seen.",
+            "format": "date-time"
+          },
+          "lastSeen": {
+            "type": "string",
+            "description": "The latest timestamp when the address was seen.",
+            "format": "date-time"
+          },
+          "swapsCount": {
+            "type": "integer",
+            "description": "Number of swaps where this address was found.",
+            "format": "int32"
+          },
+          "usdVolume": {
+            "type": "number",
+            "description": "Total usd volume of all swaps with this address.",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Bridge address through external API."
       },
       "BridgeDto": {
         "type": "object",
@@ -1023,6 +1291,33 @@
           "Malfunction"
         ],
         "type": "string"
+      },
+      "CursorPageOfBridgeAddressExported": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BridgeAddressExported"
+            },
+            "nullable": true
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          },
+          "currentCursor": {
+            "type": "string",
+            "nullable": true
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrev": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
       },
       "DateRangeFilter": {
         "enum": [
@@ -1134,6 +1429,14 @@
           "NotFound",
           "MismatchDetected",
           "OK"
+        ],
+        "type": "string"
+      },
+      "PaginationDirection": {
+        "enum": [
+          "First",
+          "Next",
+          "Prev"
         ],
         "type": "string"
       },
@@ -1422,7 +1725,7 @@
             "items": {
               "$ref": "#/components/schemas/TagDto"
             },
-            "description": "Optional field returning extra information for certain swaps. Currently defined tags:\r\n`thor-affiliate` for swaps through Thorswap;\r\n`nft` to indicate whether the transaction is an NFT deposit or withdrawal (`nft`: `deposit` or `nft`: `withdrawal`);\r\n`injective-nonce` for swaps through the Injective bridge to the Injective chain.",
+            "description": "Optional field returning extra information for certain swaps. Currently, defined tags:\r\n`thor-affiliate` for swaps through Thorswap;\r\n`partial-execution` for swaps that executed partially (`partial-execution`: `refund` for swaps with asset refund or `partial-execution`: `split` for swaps with splitted output);\r\n`nft` to indicate whether the transaction is an NFT deposit or withdrawal (`nft`: `deposit` or `nft`: `withdrawal`);\r\n`injective-nonce` for swaps through the Injective bridge to the Injective chain.",
             "nullable": true
           },
           "balanceChanges": {

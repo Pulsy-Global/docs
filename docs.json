@@ -119,7 +119,8 @@
               "xflow/api-reference/endpoints/get_swap_by_id",
               "xflow/api-reference/endpoints/get_bridges",
               "xflow/api-reference/endpoints/get_chains",
-              "xflow/api-reference/endpoints/get_tokens"
+              "xflow/api-reference/endpoints/get_tokens",
+              "xflow/api-reference/endpoints/get_bridge_addresses"
             ]
           },
           {
